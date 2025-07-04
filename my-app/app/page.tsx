@@ -7,7 +7,7 @@ export default function Home() {
       <main className="min-h-screen">
         <Game></Game>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center bg-yellow-900 h-full overflow-clip">
       </footer>
     </div>
   );

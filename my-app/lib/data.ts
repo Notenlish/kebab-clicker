@@ -1,4 +1,21 @@
-import { GeneratorData } from "./types";
+import { GeneratorData, GameData } from "./types";
+
+export function emptyData() {
+  return {
+    kebabs: 0,
+    rank: "None",
+    rankId: 0,
+    generators: possibleGenerators,
+    kebabsPerSecond: 0,
+    kebabsPerClick: 100000,
+    playedFor: 0,
+    prestiges: 0,
+    basePrestigeCost:1000,
+    prestigeKebabMultiplier: 1,
+  } as GameData;
+}
+
+
 export const possibleGenerators: GeneratorData[] = [
   {
     name: "Grill Assistant",
@@ -49,9 +66,19 @@ export const possibleGenerators: GeneratorData[] = [
     id: 3,
     description: "Delivers tasty kebabs to people.",
   },
+  {
+    name: "Turkish Kebab Master",
+    unitImage: "/generators/turkish-kebab-man.png",
+    buttonImage: "/generators/turkish-kebab-man-head.png",
+    baseCost: 40_000,
+    baseProduction: 50,
+    automaticProduction: 150,
+    backgroundImage: "/generators/turkish-kebab-manBG.png",
+    owned: 0,
+    id: 4,
+    description: "An old master at making Kebab.",
+  },
   /*
-  kebab shop
-  turkish kebab master
   auto griller 3000
   meat synthesizer
   infinite skewer

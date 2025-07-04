@@ -74,7 +74,7 @@ export default function KebabRollsBg() {
     >
       {rolls.map((roll, _i) => (
         <Image
-          key={roll.index}
+          key={_i}
           src="/kebab-roll.png"
           alt=""
           ref={roll.ref}

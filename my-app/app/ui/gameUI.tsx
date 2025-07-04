@@ -2,8 +2,8 @@ import { GameData, GameFunctions } from "@/lib/types";
 import Kebab from "./kebab";
 import GeneratorStore from "./GeneratorStore";
 import GeneratorVisuals from "./GeneratorVisuals";
-
-import Seperator from "./Seperator";
+import Stats from "./stats";
+import PrestigeButton from "./prestigeButton";
 
 export default function GameUI({
   functions,
@@ -13,9 +13,11 @@ export default function GameUI({
   data: GameData;
 }) {
   return (
-    <div className="min-h-screen grid grid-cols-3 bg-yellow-900">
+    <div className="min-h-screen grid grid-cols-3 bg-yellow-900 overflow-clip">
       <div className="">
-        <Kebab functions={functions} data={data}></Kebab>
+        <Kebab functions={functions} data={data} />
+        <Stats functions={functions} data={data} />
+        <PrestigeButton functions={functions} data={data} />
       </div>
       <GeneratorVisuals functions={functions} data={data} />
       <GeneratorStore functions={functions} data={data} />

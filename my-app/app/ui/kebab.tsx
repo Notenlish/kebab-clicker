@@ -8,6 +8,11 @@ import { useGSAP } from "@gsap/react";
 
 import KebabRollsBg from "./rollsBg";
 import Seperator from "./Seperator";
+import {
+  roundToNthDecimal,
+  ultimateKebabsPerClick,
+  ultimateKebabsPerSecond,
+} from "@/lib/utils";
 
 export default function Kebab({
   functions,
@@ -85,12 +90,36 @@ export default function Kebab({
             .
           </div>
           <div ref={counterRef}>Kebabs: {data.kebabs}</div>
-          <div>Kebabs per click: {data.kebabsPerClick}</div>
-          <div>Kebabs per second: {data.kebabsPerSecond}</div>
+          <div>
+            Kebabs per click:{" "}
+            {roundToNthDecimal(
+              ultimateKebabsPerClick(
+                data.kebabsPerClick,
+                data.prestigeKebabMultiplier,
+              ),
+              4,
+            )}
+          </div>
+          <div>
+            Kebabs per second:{" "}
+            {roundToNthDecimal(
+              ultimateKebabsPerSecond(
+                data.kebabsPerSecond,
+                data.prestigeKebabMultiplier,
+              ),
+              4,
+            )}
+          </div>
         </div>
       </div>
       <Seperator width={16} height={1080} right={0} top={0} />
-      <Seperator width={640} height={16} orientation="horizontal" bottom={0} left={0} />
+      <Seperator
+        width={640}
+        height={16}
+        orientation="horizontal"
+        bottom={0}
+        left={0}
+      />
     </div>
   );
 }

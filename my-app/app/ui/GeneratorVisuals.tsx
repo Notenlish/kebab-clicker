@@ -40,7 +40,7 @@ export default function GeneratorVisuals({
           </div>
         );
       })}
-      <Seperator width={16} height={1080} right={0} top={0} />
+      <Seperator width={16} height={1920} right={0} top={0} />
     </div>
   );
 }

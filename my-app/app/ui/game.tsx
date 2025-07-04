@@ -8,19 +8,9 @@ import { possibleGenerators } from "@/lib/data";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { calculateCostOfGenerator } from "@/lib/utils";
+import { calculateCostOfGenerator, calculatePrestigeCost } from "@/lib/utils";
 gsap.registerPlugin(useGSAP);
-
-function emptyData() {
-  return {
-    kebabs: 0,
-    rank: "None",
-    rankId: 0,
-    generators: possibleGenerators,
-    kebabsPerSecond: 0,
-    kebabsPerClick: 100000,
-  } as GameData;
-}
+import { emptyData } from "@/lib/data";
 
 //
 
@@ -34,10 +24,7 @@ export default function Game() {
 
   const buyGenerator = useCallback(
     (gen: GeneratorData) => {
-      console.log("trying to buy generator", gen);
       const cost = calculateCostOfGenerator(gen.baseCost, gen.owned);
-      console.log("calculated cost", cost);
-      console.log(data.kebabs);
       if (data.kebabs >= cost) {
         gen.owned += 1;
         const newKebabs = (data.kebabs -= cost);
@@ -47,7 +34,6 @@ export default function Game() {
         const newKebabsPerClick = data.kebabsPerClick + gen.baseProduction;
 
         const newGenerators = [...data.generators];
-        console.log("Added 1 generator");
         setData((prevData) => ({
           ...prevData,
           kebabs: newKebabs,
@@ -70,6 +56,29 @@ export default function Game() {
       kebabs: prevData.kebabs + prevData.kebabsPerSecond,
     }));
   }, []);
+
+  const playedForAdd = useCallback(() => {
+    setData((prevData) => ({ ...prevData, playedFor: prevData.playedFor + 1 }));
+  }, []);
+
+  // TODO: ACTUALLY IMPLEMENT PRESTIGE MECHANIC
+
+  const doPrestige = useCallback(() => {
+    console.log(data.kebabs);
+    const cost = calculatePrestigeCost(data.basePrestigeCost, data.prestiges);
+    console.log(cost);
+    if (data.kebabs >= cost) {
+      const newKebabs = data.kebabs - cost;
+      const newPrestiges = data.prestiges + 1;
+      const newBaseMultiplier = 1.2 ** newPrestiges;
+      setData((prevData) => ({
+        ...prevData,
+        kebabs: newKebabs,
+        prestiges: newPrestiges,
+        prestigeKebabMultiplier: newBaseMultiplier,
+      }));
+    }
+  }, [calculatePrestigeCost, data.kebabs]);
 
   const changeRank = useCallback((newRankId: number) => {
     const nextRank = ranksData[newRankId];
@@ -99,6 +108,8 @@ export default function Game() {
     buyGenerator: buyGenerator,
     determineRank: determineRank, // This determineRank is primarily for direct calls, not the interval
     autoKebabProduction: autoKebabProduction,
+    playedForAdd: playedForAdd,
+    doPrestige: doPrestige,
   };
 
   useEffect(() => {
@@ -109,7 +120,8 @@ export default function Game() {
     const intervalId = setInterval(() => {
       // since it uses ref, it will get latest data
       determineRank();
-      autoKebabProduction()
+      autoKebabProduction();
+      playedForAdd();
     }, 1000);
 
     // Cleanup the interval when the component unmounts or this effect re-runs

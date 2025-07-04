@@ -20,6 +20,10 @@ export type GameData = {
   generators: GeneratorData[];
   kebabsPerSecond: number;
   kebabsPerClick: number;
+  prestiges: number;
+  prestigeKebabMultiplier: number;
+  basePrestigeCost: number;
+  playedFor: number;
 };
 
 export type GameFunctions = {
@@ -28,4 +32,6 @@ export type GameFunctions = {
   changeRank: (newRankId: number) => void;
   buyGenerator: (gen: GeneratorData) => void;
   autoKebabProduction: () => void;
+  playedForAdd: () => void;
+  doPrestige: () => void;
 };
