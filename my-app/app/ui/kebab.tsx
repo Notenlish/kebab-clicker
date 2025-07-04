@@ -1,5 +1,5 @@
 import { GameData, GameFunctions } from "@/lib/types";
-import { TypographyH1 } from "./typography";
+import { TypographyH2 } from "./typography";
 import Image from "next/image";
 
 import gsap from "gsap";
@@ -54,23 +54,21 @@ export default function Kebab({
   );
 
   return (
-    <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] p-4 relative">
+    <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative">
       <KebabRollsBg></KebabRollsBg>
       <br />
-      <TypographyH1>
-        Rank:{" "}
+      <TypographyH2>
+        <div>Rank: </div>
         <div className="text-red-700" ref={rankTextRef}>
           {data.rank}
         </div>
-      </TypographyH1>
+      </TypographyH2>
       <br />
-      <div
-        className="w-full aspect-auto grid place-content-center"
-        onClick={() => {
-          functions.addKebab(1);
-        }}
-      >
+      <div className="w-full aspect-auto grid place-content-center">
         <Image
+          onClick={() => {
+            functions.addKebab(data.kebabsPerClick);
+          }}
           className="cursor-pointer"
           ref={kebabRef}
           src="/kebab.png"
@@ -80,7 +78,12 @@ export default function Kebab({
         />
       </div>
       <br />
-      <div ref={counterRef}>Kebabs: {data.kebabs}</div>
+      <div className="flex-col z-10 flex items-center relative w-full h-full">
+        <div className="top-0 left-0 bg-white opacity-30 w-full h-full absolute -z-10">.</div>
+        <div ref={counterRef}>Kebabs: {data.kebabs}</div>
+        <div>Kebabs per click: {data.kebabsPerClick}</div>
+        <div>Kebabs per second: {data.kebabsPerSecond}</div>
+      </div>
     </div>
   );
 }

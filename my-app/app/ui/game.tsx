@@ -1,12 +1,14 @@
 "use client";
-import { ReactNode } from "react";
+import { ranksData } from "@/lib/data";
 import GameUI from "./gameUI";
-import { GameData, GameFunctions } from "@/lib/types";
+import { GameData, GameFunctions, GeneratorData } from "@/lib/types";
 
 import { useEffect, useCallback, useRef, useState } from "react";
+import { possibleGenerators } from "@/lib/data";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { calculateCostOfGenerator } from "@/lib/utils";
 gsap.registerPlugin(useGSAP);
 
 function emptyData() {
@@ -14,61 +16,11 @@ function emptyData() {
     kebabs: 0,
     rank: "None",
     rankId: 0,
-  };
+    generators: possibleGenerators,
+    kebabsPerSecond: 0,
+    kebabsPerClick: 1,
+  } as GameData;
 }
-
-const ranksData = [
-  {
-    name: "None",
-    requiredKebabs: 0,
-    rankId: 0,
-  },
-  {
-    name: "Apprentice Assembler",
-    requiredKebabs: 10, // 200
-    rankId: 1,
-  },
-  {
-    name: "Skewer Specialist",
-    requiredKebabs: 2_000,
-    rankId: 2,
-  },
-  {
-    name: "Sauce Sensei",
-    requiredKebabs: 10_000,
-    rankId: 3,
-  },
-  {
-    name: "Grill Guru",
-    requiredKebabs: 100_000,
-    rankId: 4,
-  },
-  {
-    name: "Salt Bae",
-    requiredKebabs: 1_000_000,
-    rankId: 5,
-  },
-  {
-    name: "Doner Man",
-    requiredKebabs: 10_000_000,
-    rankId: 6,
-  },
-  {
-    name: "Kebab Kingpin",
-    requiredKebabs: 100_000_000,
-    rankId: 7,
-  },
-  {
-    name: "Supreme Skewered",
-    requiredKebabs: 1_000_000_000,
-    rankId: 8,
-  },
-  {
-    name: "Turkish Kebab Sultan",
-    requiredKebabs: 50_000_000_000,
-    rankId: 9,
-  },
-].sort((a, b) => a.rankId - b.rankId);
 
 //
 
@@ -80,8 +32,43 @@ export default function Game() {
     dataRef.current = data;
   }, [data]);
 
+  const buyGenerator = useCallback(
+    (gen: GeneratorData) => {
+      console.log("trying to buy generator", gen);
+      const cost = calculateCostOfGenerator(gen.baseCost, gen.owned);
+      console.log("calculated cost", cost);
+      console.log(data.kebabs);
+      if (data.kebabs >= cost) {
+        gen.owned += 1;
+        const newKebabs = (data.kebabs -= cost);
+
+        const newKebabsPerSecond =
+          data.kebabsPerSecond + gen.automaticProduction;
+        const newKebabsPerClick = data.kebabsPerClick + gen.baseProduction;
+
+        const newGenerators = [...data.generators];
+        console.log("Added 1 generator");
+        setData((prevData) => ({
+          ...prevData,
+          kebabs: newKebabs,
+          kebabsPerSecond: newKebabsPerSecond,
+          kebabsPerClick: newKebabsPerClick,
+          generators: newGenerators,
+        }));
+      }
+    },
+    [data.kebabs],
+  );
+
   const addKebab = useCallback((amount: number) => {
     setData((prevData) => ({ ...prevData, kebabs: prevData.kebabs + amount }));
+  }, []);
+
+  const autoKebabProduction = useCallback(() => {
+    setData((prevData) => ({
+      ...prevData,
+      kebabs: prevData.kebabs + prevData.kebabsPerSecond,
+    }));
   }, []);
 
   const changeRank = useCallback((newRankId: number) => {
@@ -109,7 +96,9 @@ export default function Game() {
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
+    buyGenerator: buyGenerator,
     determineRank: determineRank, // This determineRank is primarily for direct calls, not the interval
+    autoKebabProduction: autoKebabProduction,
   };
 
   useEffect(() => {
@@ -118,9 +107,10 @@ export default function Game() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Call the determineRank function which now uses the ref to get the latest data
+      // since it uses ref, it will get latest data
       determineRank();
-    }, 1000); // Check every second
+      autoKebabProduction()
+    }, 1000);
 
     // Cleanup the interval when the component unmounts or this effect re-runs
     return () => clearInterval(intervalId);
@@ -128,7 +118,7 @@ export default function Game() {
 
   const startGame = useCallback(() => {
     setData(emptyData());
-  }, []); // No dependencies
+  }, []);
 
   return <GameUI functions={functions} data={data}></GameUI>;
 }

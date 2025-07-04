@@ -18,7 +18,7 @@ export function TypographyH2({
   children: React.ReactNode;
 }>) {
   return (
-    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 border-none capitalize">
+    <h2 className="scroll-m-20 border-b pb-2 text-3xl lg:text-4xl font-bold tracking-tight first:mt-0 border-none capitalize">
       {children}
     </h2>
   );
