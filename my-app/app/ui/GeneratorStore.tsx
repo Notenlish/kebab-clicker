@@ -12,11 +12,11 @@ export default function GeneratorStore({
   data: GameData;
 }) {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       {data.generators.map((e, i) => {
         const cost = calculateCostOfGenerator(e.baseCost, e.owned)
         return (
-          <div key={e.id} className="p-4 bg-orange-200">
+          <div key={e.id} className="h-60 p-4 bg-orange-200">
             <div className="flex gap-4 items-center justify-between">
               <Image alt={e.name} src={e.buttonImage} width={48} height={48} />
               <TypographyH2>{e.name}</TypographyH2>

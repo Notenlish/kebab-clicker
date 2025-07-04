@@ -18,7 +18,7 @@ function emptyData() {
     rankId: 0,
     generators: possibleGenerators,
     kebabsPerSecond: 0,
-    kebabsPerClick: 1,
+    kebabsPerClick: 100000,
   } as GameData;
 }
 

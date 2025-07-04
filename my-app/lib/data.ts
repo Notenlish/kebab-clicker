@@ -25,10 +25,31 @@ export const possibleGenerators: GeneratorData[] = [
     description:
       "Automatically dispenses secret sauce on each kebab for extra flavor.",
   },
+  {
+    name: "Kebab Delivery Scooter",
+    unitImage: "/generators/scooter.png",
+    buttonImage: "/generators/scooter-small.png",
+    baseCost: 1000,
+    baseProduction: 0,
+    automaticProduction: 5,
+    backgroundImage: "/generators/scooterBG.png",
+    owned: 0,
+    id: 2,
+    description: "Delivers tasty kebabs to people.",
+  },
+  {
+    name: "Kebab Shop",
+    unitImage: "/generators/kebab-shop.png",
+    buttonImage: "/generators/kebab-shop-small.png",
+    baseCost: 5000,
+    baseProduction: 5,
+    automaticProduction: 25,
+    backgroundImage: "/generators/kebab-shopBG.png",
+    owned: 0,
+    id: 3,
+    description: "Delivers tasty kebabs to people.",
+  },
   /*
-  grill assistant
-  sauce bot
-  kebab delivery scooter
   kebab shop
   turkish kebab master
   auto griller 3000
