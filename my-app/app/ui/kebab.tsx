@@ -74,7 +74,7 @@ export default function Kebab({
         <div className="w-full aspect-auto grid place-content-center">
           <Image
             onClick={() => {
-              functions.addKebab(data.kebabsPerClick);
+              functions.addKebab(ultimateKebabsPerClick(data));
             }}
             className="cursor-pointer"
             ref={kebabRef}
@@ -94,23 +94,11 @@ export default function Kebab({
           </div>
           <div>
             Kebabs per click:{" "}
-            {roundToNthDecimal(
-              ultimateKebabsPerClick(
-                data.kebabsPerClick,
-                data.prestigeKebabMultiplier,
-              ),
-              4,
-            )}
+            {roundToNthDecimal(ultimateKebabsPerClick(data), 4)}
           </div>
           <div>
             Kebabs per second:{" "}
-            {roundToNthDecimal(
-              ultimateKebabsPerSecond(
-                data.kebabsPerSecond,
-                data.prestigeKebabMultiplier,
-              ),
-              4,
-            )}
+            {roundToNthDecimal(ultimateKebabsPerSecond(data), 4)}
           </div>
         </div>
         <div className="left-0 bottom-0 bg-gradient-to-b from-transparent to-[#e1bd85] w-full h-32 z-10"></div>

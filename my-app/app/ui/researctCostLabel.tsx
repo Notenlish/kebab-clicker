@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { TypographyH4 } from "./typography";
-export default function CostLabel({
+
+export default function ResearchCostLabel({
   owned,
   cost,
 }: {
@@ -8,15 +9,14 @@ export default function CostLabel({
   cost: number;
 }) {
   return (
-    <div className="flex gap-4 items-center">
+    <div className="flex gap-2 items-center">
       <Image
         alt=""
-        width={16}
-        height={16}
-        className="rotate-z-45"
-        src="./kebab-roll.png"
+        width={24}
+        height={24}
+        className=""
+        src="./research-point.png"
       />
-      {/* if owned is more or equal to cost, make it green. otherwise red. */}
       <TypographyH4>
         {owned >= cost ? (
           <span className="text-green-500">{cost}</span>

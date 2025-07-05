@@ -1,4 +1,4 @@
-import { GeneratorData, GameData } from "./types";
+import { GeneratorData, GameData, ResearchData } from "./types";
 
 export function emptyData() {
   return {
@@ -7,6 +7,8 @@ export function emptyData() {
     prestiges: 0,
     basePrestigeCost: 1000,
     prestigeKebabMultiplier: 1,
+    researchPoints: 0,
+    researches: possibleResearches,
   } as GameData;
 }
 
@@ -17,9 +19,62 @@ export function newPrestigeOverride() {
     rankId: 0,
     generators: possibleGenerators,
     kebabsPerSecond: 0,
-    kebabsPerClick: 1,
+    kebabsPerClick: 1000,
   };
 }
+
+export const possibleResearches: ResearchData[] = [
+  {
+    name: "Golden Kebab",
+    description: "This golden kebab will double your Kebabs per click(KPC).",
+    cost: 1,
+    researched: false,
+    id: 0,
+  },
+  {
+    name: "Automated Slicing",
+    description: "Increases Kebab per second (KPS) from all sources by 10%.",
+    cost: 2,
+    researched: false,
+    id: 1,
+  },
+  {
+    name: "Advanced Grilling Techniques",
+    description: "Increases Kebabs per click (KPC) by 25%.",
+    cost: 2,
+    researched: false,
+    id: 2,
+  },
+  {
+    name: "Customer Loyalty Program",
+    description: "Reduces the cost of all future upgrades by 5%.",
+    cost: 1,
+    researched: false,
+    id: 3,
+  },
+  {
+    name: "Sauce Innovation",
+    description: "Doubles the effectiveness of 'Sauce Bot' upgrades.",
+    cost: 1,
+    researched: false,
+    id: 4,
+  },
+  {
+    name: "Efficient Delivery Routes",
+    description:
+      "Increases the speed and capacity of 'Kebab Delivery Scooter' by 20%.",
+    cost: 1,
+    researched: false,
+    id: 5,
+  },
+  {
+    name: "Secret Ingredient Discovery",
+    description: "Provides a permanent 5% bonus to all Kebab production.",
+    cost: 3,
+    researched: false,
+    id: 6,
+  },
+];
 
 export const possibleGenerators: GeneratorData[] = [
   {

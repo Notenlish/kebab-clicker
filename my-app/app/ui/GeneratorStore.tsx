@@ -2,8 +2,8 @@
 import { GameData, GameFunctions } from "@/lib/types";
 import Image from "next/image";
 import { TypographyH2, TypographyP } from "./typography";
-import CostLabel from "./costLabel";
-import { calculateCostOfGenerator } from "@/lib/utils";
+import KebabCostLabel from "./kebabCostLabel";
+import { ultimateUpgradeCost } from "@/lib/utils";
 
 import Seperator from "./Seperator";
 
@@ -19,7 +19,7 @@ export default function GeneratorStore({
       {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         data.generators.map((e, i) => {
-          const cost = calculateCostOfGenerator(e.baseCost, e.owned);
+          const cost = ultimateUpgradeCost(data, e.baseCost, e.owned);
           return (
             <div key={e.id} className="h-60 p-4 bg-orange-200 relative">
               <div className="flex gap-4 mt-4 items-center justify-between">
@@ -36,13 +36,12 @@ export default function GeneratorStore({
               </div>
               <TypographyP>{e.description}</TypographyP>
               <button
-                className="flex gap-4 items-center px-4 cursor-pointer border border-black"
+                className="flex gap-4 rounded items-center px-4 py-2 cursor-pointer bg-neutral-50 border border-black"
                 onClick={() => {
                   functions.buyGenerator(e);
                 }}
               >
-                Buy
-                <CostLabel owned={data.kebabs} cost={cost} />
+                Buy <KebabCostLabel owned={data.kebabs} cost={cost} />
               </button>
               <Seperator
                 width={1080}

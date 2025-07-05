@@ -1,6 +1,6 @@
 import { TypographyP } from "./typography";
 import Seperator from "./Seperator";
-import CostLabel from "./costLabel";
+import KebabCostLabel from "./kebabCostLabel";
 import { calculatePrestigeCost } from "@/lib/utils";
 import { GameData, GameFunctions } from "@/lib/types";
 
@@ -15,15 +15,18 @@ export default function PrestigeButton({
     <div className="bg-orange-200 p-4 pb-8 relative overflow-clip">
       <TypographyP>
         Prestige multiplies the amount of kebabs you make per each click and per
-        second.
+        second and provides a research point.
       </TypographyP>
       <br></br>
-      <button onClick={() => {
-        console.log("skibidi")
-        functions.doPrestige()
-      }} className="border cursor-pointer border-black bg-neutral-50 p-4 py-2 rounded flex gap-4 items-center">
+      <button
+        onClick={() => {
+          console.log("skibidi");
+          functions.doPrestige();
+        }}
+        className="border cursor-pointer border-black bg-neutral-50 p-4 py-2 rounded flex gap-4 items-center"
+      >
         Prestige{" "}
-        <CostLabel
+        <KebabCostLabel
           owned={data.kebabs}
           cost={calculatePrestigeCost(data.basePrestigeCost, data.prestiges)}
         />

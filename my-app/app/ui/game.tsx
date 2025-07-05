@@ -1,13 +1,18 @@
 "use client";
 import { newPrestigeOverride, ranksData } from "@/lib/data";
 import GameUI from "./gameUI";
-import { GameData, GameFunctions, GeneratorData } from "@/lib/types";
+import {
+  GameData,
+  GameFunctions,
+  GeneratorData,
+  ResearchData,
+} from "@/lib/types";
 
 import { useEffect, useCallback, useRef, useState } from "react";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { calculateCostOfGenerator, calculatePrestigeCost } from "@/lib/utils";
+import { ultimateUpgradeCost, calculatePrestigeCost } from "@/lib/utils";
 gsap.registerPlugin(useGSAP);
 import { emptyData } from "@/lib/data";
 
@@ -19,12 +24,32 @@ export default function Game() {
     dataRef.current = data;
   }, [data]);
 
+  const researchUpgrade = useCallback((res: ResearchData) => {
+    const currentResearchPoints = dataRef.current.researchPoints;
+
+    if (!res.researched && currentResearchPoints >= res.cost) {
+      const newResearch = { ...res, researched: true } as ResearchData;
+      const newResearchPoints = currentResearchPoints - res.cost;
+
+      // remove the old research item
+      const newResearches = [...dataRef.current.researches].filter(
+        (e) => e.id != res.id,
+      );
+
+      setData((prevData) => ({
+        ...prevData,
+        researches: [...newResearches, newResearch],
+        researchPoints: newResearchPoints,
+      }));
+    }
+  }, []);
+
   const buyGenerator = useCallback(
     (gen: GeneratorData) => {
-      const cost = calculateCostOfGenerator(gen.baseCost, gen.owned);
+      const cost = ultimateUpgradeCost(data, gen.baseCost, gen.owned);
       if (data.kebabs >= cost) {
         gen.owned += 1;
-        const newKebabs = (data.kebabs -= cost);
+        const newKebabs = data.kebabs - cost;
 
         const newKebabsPerSecond =
           data.kebabsPerSecond + gen.automaticProduction;
@@ -64,21 +89,21 @@ export default function Game() {
     setData((prevData) => ({ ...prevData, playedFor: prevData.playedFor + 1 }));
   }, []);
 
-  // TODO: ACTUALLY IMPLEMENT PRESTIGE MECHANIC
-
   const doPrestige = useCallback(() => {
     const cost = calculatePrestigeCost(data.basePrestigeCost, data.prestiges);
     if (data.kebabs >= cost) {
       const newPrestiges = data.prestiges + 1;
       const newBaseMultiplier = 1.2 ** newPrestiges;
+      const newResearchPoints = data.researchPoints + 1;
       setData((prevData) => ({
         ...prevData,
         ...newPrestigeOverride(),
         prestiges: newPrestiges,
         prestigeKebabMultiplier: newBaseMultiplier,
+        researchPoints: newResearchPoints,
       }));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculatePrestigeCost, data.kebabs]);
 
   const changeRank = useCallback((newRankId: number) => {
@@ -111,7 +136,7 @@ export default function Game() {
   const startGame = useCallback(() => {
     setData(emptyData());
   }, []);
-  
+
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
@@ -122,6 +147,7 @@ export default function Game() {
     doPrestige: doPrestige,
     loadData: loadData,
     startGame: startGame,
+    researchUpgrade: researchUpgrade,
   };
 
   useEffect(() => {
@@ -134,9 +160,8 @@ export default function Game() {
 
     // Cleanup the interval when the component unmounts or this effect re-runs
     return () => clearInterval(intervalId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [determineRank]); // Re-create interval if determineRank changes (which it won't due to useCallback)
-
 
   return <GameUI functions={functions} data={data}></GameUI>;
 }

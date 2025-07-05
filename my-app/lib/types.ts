@@ -1,5 +1,13 @@
 export type Rank = string;
 
+export type ResearchData = {
+  name: string;
+  cost: number;
+  description: string;
+  researched: boolean;
+  id: number;
+};
+
 export type GeneratorData = {
   name: string;
   baseProduction: number;
@@ -24,6 +32,8 @@ export type GameData = {
   prestigeKebabMultiplier: number;
   basePrestigeCost: number;
   playedFor: number;
+  researchPoints: number;
+  researches: ResearchData[];
 };
 
 export type GameFunctions = {
@@ -36,4 +46,5 @@ export type GameFunctions = {
   doPrestige: () => void;
   loadData: (saveData: object) => void;
   startGame: () => void;
+  researchUpgrade: (res: ResearchData) => void;
 };

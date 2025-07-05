@@ -21,6 +21,8 @@ export default function Stats({
         <b>{roundToNthDecimal(data.prestigeKebabMultiplier, 4)}</b>
         <br></br>
         Played for: <b>{data.playedFor} seconds</b>
+        <br></br>
+        Research Points: <b>{data.researchPoints}</b>
       </TypographyP>
       <Seperator
         width={640}
