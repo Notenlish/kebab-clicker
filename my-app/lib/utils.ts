@@ -21,11 +21,11 @@ export function roundToNthDecimal(value: number, decimals: number) {
   return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 }
 
-export function ultimateKebabsPerSecond(kebabsPerSecond, prestigeKebabMultiplier) {
+export function ultimateKebabsPerSecond(kebabsPerSecond:number, prestigeKebabMultiplier:number) {
   return kebabsPerSecond * prestigeKebabMultiplier
 }
 
-export function ultimateKebabsPerClick(kebabsPerClick, prestigeKebabMultiplier) {
+export function ultimateKebabsPerClick(kebabsPerClick:number, prestigeKebabMultiplier:number) {
   return kebabsPerClick * prestigeKebabMultiplier
 }
 

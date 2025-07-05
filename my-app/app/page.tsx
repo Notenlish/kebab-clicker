@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Game from "./ui/game";
 
 export default function Home() {

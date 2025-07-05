@@ -78,7 +78,7 @@ export default function Kebab({
             }}
             className="cursor-pointer"
             ref={kebabRef}
-            src="/kebab.png"
+            src="./kebab.png"
             alt="kebab"
             width="256"
             height="512"
@@ -89,7 +89,9 @@ export default function Kebab({
           <div className="top-0 left-0 bg-white opacity-30 w-full h-full absolute -z-10">
             .
           </div>
-          <div ref={counterRef}>Kebabs: {roundToNthDecimal(data.kebabs,4)}</div>
+          <div ref={counterRef}>
+            Kebabs: {roundToNthDecimal(data.kebabs, 4)}
+          </div>
           <div>
             Kebabs per click:{" "}
             {roundToNthDecimal(
@@ -111,6 +113,7 @@ export default function Kebab({
             )}
           </div>
         </div>
+        <div className="left-0 bottom-0 bg-gradient-to-b from-transparent to-[#e1bd85] w-full h-32 z-10"></div>
       </div>
       <Seperator width={16} height={1080} right={0} top={0} />
       <Seperator

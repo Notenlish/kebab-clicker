@@ -6,8 +6,8 @@ import { useGSAP } from "@gsap/react";
 
 interface RollItem {
   ref: RefObject<HTMLImageElement | null>; // Or whatever DOM element type you expect, e.g., HTMLCanvasElement
-  xpos: number | string;
-  ypos: number | string;
+  xpos: number;
+  ypos: number;
   index: number;
 }
 
@@ -21,7 +21,7 @@ export default function KebabRollsBg() {
       const newRef = createRef<HTMLImageElement>();
       const newRoll: RollItem = {
         ref: newRef,
-        xpos: Math.random()-0.07,
+        xpos: Math.random() - 0.07,
         ypos: Math.random(),
         index: i,
       };
@@ -34,6 +34,10 @@ export default function KebabRollsBg() {
       for (let i = 0; i < rolls.length; i++) {
         const roll = rolls[i];
 
+        if (!boundingRect) {
+          return;
+        }
+
         const startX = roll.xpos * boundingRect.width;
         const startY = roll.ypos * boundingRect?.height; // Assuming startY is always 0 based on your calculation
         const endY = boundingRect.height;
@@ -44,18 +48,28 @@ export default function KebabRollsBg() {
         tl.fromTo(
           roll.ref.current,
           { x: startX, y: "-110%" },
-          { x: startX, y: endY, duration: duration, ease: "none", repeat:-1 },
+          { x: startX, y: endY, duration: duration, ease: "none", repeat: -1 },
         );
         tl.seek(progress * duration);
         tl.play();
-        
-        const duration2 = 1.5
-        const tl2 = gsap.timeline()
-        tl2.fromTo(roll.ref.current,{
-          rotateZ:-180,
-        },{rotateZ:180, ease:"none", repeat:-1, yoyo:false, duration:duration2})
-        tl2.seek(progress*duration2)
-        tl2.play()
+
+        const duration2 = 1.5;
+        const tl2 = gsap.timeline();
+        tl2.fromTo(
+          roll.ref.current,
+          {
+            rotateZ: -180,
+          },
+          {
+            rotateZ: 180,
+            ease: "none",
+            repeat: -1,
+            yoyo: false,
+            duration: duration2,
+          },
+        );
+        tl2.seek(progress * duration2);
+        tl2.play();
         // how do I specify at which second of the animation its in(progress)
       }
     },
@@ -75,7 +89,7 @@ export default function KebabRollsBg() {
       {rolls.map((roll, _i) => (
         <Image
           key={_i}
-          src="/kebab-roll.png"
+          src="./kebab-roll.png"
           alt=""
           ref={roll.ref}
           width="48"

@@ -19,7 +19,7 @@ export default function Seperator({
   return (
     <Image
       className="absolute z-10 bg-repeat"
-      src={orientation == "vertical" ? "/wall.png" : "/wall-horizontal.png"}
+      src={orientation == "vertical" ? "./wall.png" : "./wall-horizontal.png"}
       alt=""
       style={{
         width: width,

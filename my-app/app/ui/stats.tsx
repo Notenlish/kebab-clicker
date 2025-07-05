@@ -2,7 +2,10 @@ import { TypographyP } from "./typography";
 import Seperator from "./Seperator";
 import { roundToNthDecimal } from "@/lib/utils";
 
+import { GameFunctions, GameData } from "@/lib/types";
+
 export default function Stats({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   functions,
   data,
 }: {
@@ -14,7 +17,8 @@ export default function Stats({
       <TypographyP>
         Prestiges: <b>{data.prestiges}</b>
         <br></br>
-        Prestige multiplier: <b>{roundToNthDecimal(data.prestigeKebabMultiplier, 4)}</b>
+        Prestige multiplier:{" "}
+        <b>{roundToNthDecimal(data.prestigeKebabMultiplier, 4)}</b>
         <br></br>
         Played for: <b>{data.playedFor} seconds</b>
       </TypographyP>

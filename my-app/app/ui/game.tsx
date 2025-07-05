@@ -4,7 +4,6 @@ import GameUI from "./gameUI";
 import { GameData, GameFunctions, GeneratorData } from "@/lib/types";
 
 import { useEffect, useCallback, useRef, useState } from "react";
-import { possibleGenerators } from "@/lib/data";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -41,6 +40,7 @@ export default function Game() {
         }));
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [data.kebabs],
   );
 
@@ -78,6 +78,7 @@ export default function Game() {
         prestigeKebabMultiplier: newBaseMultiplier,
       }));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calculatePrestigeCost, data.kebabs]);
 
   const changeRank = useCallback((newRankId: number) => {
@@ -133,6 +134,7 @@ export default function Game() {
 
     // Cleanup the interval when the component unmounts or this effect re-runs
     return () => clearInterval(intervalId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [determineRank]); // Re-create interval if determineRank changes (which it won't due to useCallback)
 
 

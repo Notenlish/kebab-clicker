@@ -14,7 +14,7 @@ export default function CostLabel({
         width={16}
         height={16}
         className="rotate-z-45"
-        src="/kebab-roll.png"
+        src="./kebab-roll.png"
       />
       {/* if owned is more or equal to cost, make it green. otherwise red. */}
       <TypographyH4>

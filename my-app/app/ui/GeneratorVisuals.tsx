@@ -4,6 +4,7 @@ import Image from "next/image";
 import Seperator from "./Seperator";
 
 export default function GeneratorVisuals({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   functions,
   data,
 }: {
@@ -12,7 +13,9 @@ export default function GeneratorVisuals({
 }) {
   return (
     <div className="flex flex-col overflow-clip relative">
-      {data.generators.map((e, _) => {
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        data.generators.map((e, _) => {
         return (
           <div className="relative w-full h-60" key={e.id}>
             <Image
@@ -36,7 +39,13 @@ export default function GeneratorVisuals({
                 ></Image>
               );
             })}
-            <Seperator orientation="horizontal" width={640} height={16} bottom={-16} left={0} />
+            <Seperator
+              orientation="horizontal"
+              width={640}
+              height={16}
+              bottom={-16}
+              left={0}
+            />
           </div>
         );
       })}

@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { GameFunctions, GameData } from "@/lib/types";
 
 import Seperator from "./Seperator";
-import { useRouter } from "next/navigation";
 
 export default function HandleStorage({
   functions,
@@ -13,8 +12,6 @@ export default function HandleStorage({
   functions: GameFunctions;
   data: GameData;
 }) {
-  const router = useRouter();
-
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
       const savedDataRaw = localStorage.getItem("gameData");
@@ -28,6 +25,7 @@ export default function HandleStorage({
         console.log("NO save data found, starting new game!");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -38,6 +36,7 @@ export default function HandleStorage({
       const rawSave = JSON.stringify(data);
       localStorage.setItem("gameData", rawSave);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.playedFor]);
 
   const resetSave = () => {
