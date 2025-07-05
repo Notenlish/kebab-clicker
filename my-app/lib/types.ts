@@ -34,4 +34,6 @@ export type GameFunctions = {
   autoKebabProduction: () => void;
   playedForAdd: () => void;
   doPrestige: () => void;
+  loadData: (saveData: object) => void;
+  startGame: () => void;
 };

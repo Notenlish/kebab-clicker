@@ -89,7 +89,7 @@ export default function Kebab({
           <div className="top-0 left-0 bg-white opacity-30 w-full h-full absolute -z-10">
             .
           </div>
-          <div ref={counterRef}>Kebabs: {data.kebabs}</div>
+          <div ref={counterRef}>Kebabs: {roundToNthDecimal(data.kebabs,4)}</div>
           <div>
             Kebabs per click:{" "}
             {roundToNthDecimal(

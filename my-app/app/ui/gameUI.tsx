@@ -4,6 +4,7 @@ import GeneratorStore from "./GeneratorStore";
 import GeneratorVisuals from "./GeneratorVisuals";
 import Stats from "./stats";
 import PrestigeButton from "./prestigeButton";
+import HandleStorage from "./handleStorage";
 
 export default function GameUI({
   functions,
@@ -18,6 +19,7 @@ export default function GameUI({
         <Kebab functions={functions} data={data} />
         <Stats functions={functions} data={data} />
         <PrestigeButton functions={functions} data={data} />
+        <HandleStorage functions={functions} data={data} />
       </div>
       <GeneratorVisuals functions={functions} data={data} />
       <GeneratorStore functions={functions} data={data} />

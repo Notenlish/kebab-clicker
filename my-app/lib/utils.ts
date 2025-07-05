@@ -28,3 +28,5 @@ export function ultimateKebabsPerSecond(kebabsPerSecond, prestigeKebabMultiplier
 export function ultimateKebabsPerClick(kebabsPerClick, prestigeKebabMultiplier) {
   return kebabsPerClick * prestigeKebabMultiplier
 }
+
+

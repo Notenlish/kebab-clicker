@@ -21,7 +21,7 @@ export default function PrestigeButton({
       <button onClick={() => {
         console.log("skibidi")
         functions.doPrestige()
-      }} className="border cursor-pointer border-black bg-blue-100 p-4 py-2 rounded flex gap-4 items-center">
+      }} className="border cursor-pointer border-black bg-neutral-50 p-4 py-2 rounded flex gap-4 items-center">
         Prestige{" "}
         <CostLabel
           owned={data.kebabs}

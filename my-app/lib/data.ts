@@ -2,17 +2,23 @@ import { GeneratorData, GameData } from "./types";
 
 export function emptyData() {
   return {
-    kebabs: 0,
-    rank: "None",
-    rankId: 0,
-    generators: possibleGenerators,
-    kebabsPerSecond: 0,
-    kebabsPerClick: 100000,
+    ...newPrestigeOverride(),
     playedFor: 0,
     prestiges: 0,
     basePrestigeCost:1000,
     prestigeKebabMultiplier: 1,
   } as GameData;
+}
+
+export function newPrestigeOverride() {
+  return {
+    kebabs: 0,
+    rank: "None",
+    rankId: 0,
+    generators: possibleGenerators,
+    kebabsPerSecond: 0,
+    kebabsPerClick: 1,
+  }
 }
 
 

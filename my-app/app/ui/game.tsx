@@ -1,5 +1,5 @@
 "use client";
-import { ranksData } from "@/lib/data";
+import { newPrestigeOverride, ranksData } from "@/lib/data";
 import GameUI from "./gameUI";
 import { GameData, GameFunctions, GeneratorData } from "@/lib/types";
 
@@ -11,8 +11,6 @@ import { useGSAP } from "@gsap/react";
 import { calculateCostOfGenerator, calculatePrestigeCost } from "@/lib/utils";
 gsap.registerPlugin(useGSAP);
 import { emptyData } from "@/lib/data";
-
-//
 
 export default function Game() {
   const [data, setData] = useState<GameData>(emptyData());
@@ -47,13 +45,18 @@ export default function Game() {
   );
 
   const addKebab = useCallback((amount: number) => {
-    setData((prevData) => ({ ...prevData, kebabs: prevData.kebabs + amount }));
+    setData((prevData) => ({
+      ...prevData,
+      kebabs: prevData.kebabs + amount * prevData.prestigeKebabMultiplier,
+    }));
   }, []);
 
   const autoKebabProduction = useCallback(() => {
     setData((prevData) => ({
       ...prevData,
-      kebabs: prevData.kebabs + prevData.kebabsPerSecond,
+      kebabs:
+        prevData.kebabs +
+        prevData.kebabsPerSecond * prevData.prestigeKebabMultiplier,
     }));
   }, []);
 
@@ -64,16 +67,13 @@ export default function Game() {
   // TODO: ACTUALLY IMPLEMENT PRESTIGE MECHANIC
 
   const doPrestige = useCallback(() => {
-    console.log(data.kebabs);
     const cost = calculatePrestigeCost(data.basePrestigeCost, data.prestiges);
-    console.log(cost);
     if (data.kebabs >= cost) {
-      const newKebabs = data.kebabs - cost;
       const newPrestiges = data.prestiges + 1;
       const newBaseMultiplier = 1.2 ** newPrestiges;
       setData((prevData) => ({
         ...prevData,
-        kebabs: newKebabs,
+        ...newPrestigeOverride(),
         prestiges: newPrestiges,
         prestigeKebabMultiplier: newBaseMultiplier,
       }));
@@ -102,6 +102,15 @@ export default function Game() {
     }
   }, [changeRank]);
 
+  const loadData = useCallback((saveData: object) => {
+    console.log("LOADING DATA", saveData);
+    setData(saveData as GameData);
+  }, []);
+
+  const startGame = useCallback(() => {
+    setData(emptyData());
+  }, []);
+  
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
@@ -110,11 +119,9 @@ export default function Game() {
     autoKebabProduction: autoKebabProduction,
     playedForAdd: playedForAdd,
     doPrestige: doPrestige,
+    loadData: loadData,
+    startGame: startGame,
   };
-
-  useEffect(() => {
-    startGame();
-  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -128,9 +135,6 @@ export default function Game() {
     return () => clearInterval(intervalId);
   }, [determineRank]); // Re-create interval if determineRank changes (which it won't due to useCallback)
 
-  const startGame = useCallback(() => {
-    setData(emptyData());
-  }, []);
 
   return <GameUI functions={functions} data={data}></GameUI>;
 }
