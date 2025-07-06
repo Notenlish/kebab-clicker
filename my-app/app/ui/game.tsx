@@ -10,6 +10,8 @@ import {
   Achievement,
 } from "@/lib/types";
 
+import { toast } from "sonner";
+
 import { useEffect, useCallback, useRef, useState } from "react";
 
 import gsap from "gsap";
@@ -135,6 +137,11 @@ export default function Game() {
         // Only mark as complete if not already completed
         if (!achievementToUpdate.completed) {
           achievementToUpdate.completed = true;
+          toast(achievementToUpdate.name, {
+            description: achievementToUpdate.description,
+            
+            className: "bg-red-600 text-neutral-900 border border-red-700",
+          });
         }
       }
     };
