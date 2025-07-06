@@ -139,6 +139,7 @@ export default function Game() {
         // Only mark as complete if not already completed
         if (!achievementToUpdate.completed) {
           achievementToUpdate.completed = true;
+          functions.playSound("achievement");
           toast(achievementToUpdate.name, {
             description: achievementToUpdate.description,
 
@@ -347,7 +348,7 @@ export default function Game() {
 
   const recalculateKPS_KPC = () => {
     let kebabsPerSecond = 0;
-    let kebabsPerClick = 100;
+    let kebabsPerClick = 1; // BASE KEBABS PER CLICK
 
     dataRef.current.generators.forEach((g) => {
       let mul = g.multiplier;
