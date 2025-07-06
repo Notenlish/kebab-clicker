@@ -48,7 +48,7 @@ export type GameData = {
 };
 
 export type GameFunctions = {
-  addKebab: (amount: number) => void;
+  addKebab: () => void;
   determineRank: () => void;
   changeRank: (newRankId: number) => void;
   buyGenerator: (gen: GeneratorData) => void;
@@ -64,7 +64,6 @@ export type GameFunctions = {
   findResearch: (name: string) => ResearchData;
   findAchivement: (name: string) => Achievement | undefined;
   findGenerator: (name: string) => GeneratorData | undefined;
-  addToast: (title: string, description: string) => void;
   playSound: (name: string) => void;
 };
 

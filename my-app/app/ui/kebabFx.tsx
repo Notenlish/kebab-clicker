@@ -2,25 +2,21 @@ import { useGSAP } from "@gsap/react";
 import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 
-import { GameFunctions, GameData } from "@/lib/types";
+import { GameFunctions } from "@/lib/types";
 
 import Image from "next/image";
 
 import { ClickFx } from "@/lib/types";
-import useMousePosition from "./mousePos";
 
 export default function KebabFx({
   functions,
-  data,
   clickFxs,
 }: {
   functions: GameFunctions;
-  data: GameData;
   clickFxs: ClickFx[];
 }) {
   const kebabRollSize = 32;
 
-  const mousePosition = useMousePosition();
   const [boundingRect, setBoundingRect] = useState<DOMRect | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -108,6 +104,7 @@ export default function KebabFx({
 
   return (
     <div ref={containerRef} className="w-full absolute h-full">
+      {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
       {clickFxs.map((fx, i) => {
         return (
           <Image

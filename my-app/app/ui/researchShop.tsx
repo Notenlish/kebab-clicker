@@ -12,6 +12,7 @@ export default function ResearchShop({
 }) {
   return (
     <div>
+      {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
       {data.researches.map((e, _i) => {
         return (
           <div

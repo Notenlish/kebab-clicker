@@ -3,7 +3,7 @@ import { TypographyH2 } from "./typography";
 import Image from "next/image";
 
 import gsap from "gsap";
-import { useRef, useState, useEffect } from "react"; // Import useEffect
+import { useRef, useEffect } from "react"; // Import useEffect
 import { useGSAP } from "@gsap/react";
 
 import KebabRollsBg from "./rollsBg";
@@ -74,16 +74,17 @@ export default function Kebab({
         // @ts-expect-error ...
         functions.setClickFxs((prevFxs) =>
           prevFxs.filter(
-            (fx) => Date.now() - fx.timestamp < 1_000, // Keep for 1 second
+            (fx: ClickFx) => Date.now() - fx.timestamp < 1_000, // Keep for 1 second
           ),
         );
       }, 100); // Check every 100ms
       return () => clearTimeout(timer);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clickFxs]); // Re-run when clickFxs changes
 
   const handleKebabClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    functions.addKebab(ultimateKebabsPerClick(data, functions));
+    functions.addKebab();
 
     // Get the click coordinates
     const { clientX, clientY } = event;
@@ -107,7 +108,7 @@ export default function Kebab({
       <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative">
         <KebabRollsBg></KebabRollsBg>
         {/* Pass the updated clickFxs state to KebabFx */}
-        <KebabFx data={data} functions={functions} clickFxs={clickFxs} />
+        <KebabFx functions={functions} clickFxs={clickFxs} />
         <br />
         <TypographyH2>
           <div>Rank: </div>

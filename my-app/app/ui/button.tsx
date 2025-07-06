@@ -1,4 +1,4 @@
-import { GameData, GameFunctions } from "@/lib/types";
+import { GameFunctions } from "@/lib/types";
 import { ReactNode } from "react";
 
 export default function CustomButton({

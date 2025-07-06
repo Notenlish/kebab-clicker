@@ -4,6 +4,7 @@ import { TypographyH2, TypographyP } from "./typography";
 import Seperator from "./Seperator";
 
 export default function Achievements({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   functions,
   data,
 }: {

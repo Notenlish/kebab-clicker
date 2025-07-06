@@ -106,7 +106,7 @@ export default function Game() {
     [data.kebabs],
   );
 
-  const addKebab = useCallback((amount: number) => {
+  const addKebab = useCallback(() => {
     audioRef.current?.kebabClick.play();
     setData((prevData) => ({
       ...prevData,
@@ -114,6 +114,7 @@ export default function Game() {
         prevData.kebabs + ultimateKebabsPerClick(dataRef.current, functions),
       KebabClicks: prevData.KebabClicks + 1,
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const autoKebabProduction = useCallback(() => {
@@ -122,6 +123,7 @@ export default function Game() {
       kebabs:
         prevData.kebabs + ultimateKebabsPerSecond(dataRef.current, functions),
     }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Achievements
@@ -139,7 +141,7 @@ export default function Game() {
           achievementToUpdate.completed = true;
           toast(achievementToUpdate.name, {
             description: achievementToUpdate.description,
-            
+
             className: "bg-red-600 text-neutral-900 border border-red-700",
           });
         }
@@ -166,27 +168,31 @@ export default function Game() {
     }
 
     // Generator ownership achievements
-    if (functions.findGenerator("Grill Assistant").owned > 0) {
+    const grillAssistant = functions.findGenerator("Grill Assistant");
+    if (grillAssistant && grillAssistant.owned > 0) {
       setAchievementCompleted("Assistant Manager");
     }
-    if (functions.findGenerator("Sauce Bot").owned > 0) {
+    const sauceBot = functions.findGenerator("Sauce Bot");
+    if (sauceBot && sauceBot.owned > 0) {
       setAchievementCompleted("Saucy Business");
     }
-    if (functions.findGenerator("Kebab Delivery Scooter").owned > 0) {
+    const deliveryScooter = functions.findGenerator("Kebab Delivery Scooter");
+    if (deliveryScooter && deliveryScooter.owned > 0) {
       setAchievementCompleted("On the Road");
     }
-    if (functions.findGenerator("Kebab Shop").owned > 0) {
+    const kebabshop = functions.findGenerator("Kebab Shop");
+    if (kebabshop && kebabshop.owned > 0) {
       setAchievementCompleted("Franchising");
     }
 
     // Generator quantity achievements
-    if (functions.findGenerator("Kebab Delivery Scooter").owned >= 10) {
+    if (deliveryScooter && deliveryScooter.owned >= 10) {
       setAchievementCompleted("Full Fleet");
     }
-    if (functions.findGenerator("Sauce Bot").owned >= 25) {
+    if (sauceBot && sauceBot.owned >= 25) {
       setAchievementCompleted("Secret Sauce Revealed!");
     }
-    if (functions.findGenerator("Grill Assistant").owned >= 100) {
+    if (grillAssistant && grillAssistant.owned >= 100) {
       setAchievementCompleted("Mini Army");
     }
 
