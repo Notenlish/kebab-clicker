@@ -9,12 +9,16 @@ export function emptyData() {
     prestigeKebabMultiplier: 1,
     researchPoints: 0,
     researches: possibleResearches,
+    achievements: possibleAchievements,
+    KebabClicks: 0,
+    prestigedAmount: 0,
   } as GameData;
 }
 
 export function newPrestigeOverride() {
   return {
     kebabs: 0,
+    kebabClicks: 0,
     rank: "None",
     rankId: 0,
     generators: possibleGenerators,
@@ -45,13 +49,13 @@ export const possibleAchievements: Achievement[] = [
   {
     id: 3,
     name: "Humble Beginnings",
-    description: "Produce a total of 5,000 kebabs",
+    description: "Have over 5,000 kebabs",
     completed: false,
   },
   {
     id: 4,
     name: "Kebab Empire",
-    description: "Produce a total of 50,000 kebabs",
+    description: "Have over 50,000 kebabs",
     completed: false,
   },
   {

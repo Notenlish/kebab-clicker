@@ -36,7 +36,9 @@ export type GameData = {
   generators: GeneratorData[];
   kebabsPerSecond: number;
   kebabsPerClick: number;
+  KebabClicks: number;
   prestiges: number;
+  prestigedAmount: number;
   prestigeKebabMultiplier: number;
   basePrestigeCost: number;
   playedFor: number;
@@ -60,6 +62,8 @@ export type GameFunctions = {
   setClickFxs: (a: ClickFx[]) => void;
   hasResearched: (r: ResearchData) => boolean;
   findResearch: (name: string) => ResearchData;
+  findAchivement: (name: string) => Achievement | undefined;
+  findGenerator: (name: string) => GeneratorData | undefined;
 };
 
 export interface ClickFx {

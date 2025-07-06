@@ -84,16 +84,156 @@ export default function Game() {
   const addKebab = useCallback((amount: number) => {
     setData((prevData) => ({
       ...prevData,
-      kebabs: prevData.kebabs + ultimateKebabsPerClick(dataRef.current, functions),
+      kebabs:
+        prevData.kebabs + ultimateKebabsPerClick(dataRef.current, functions),
+      KebabClicks: prevData.KebabClicks + 1,
     }));
   }, []);
 
   const autoKebabProduction = useCallback(() => {
     setData((prevData) => ({
       ...prevData,
-      kebabs: prevData.kebabs + ultimateKebabsPerSecond(dataRef.current, functions),
+      kebabs:
+        prevData.kebabs + ultimateKebabsPerSecond(dataRef.current, functions),
     }));
   }, []);
+
+  const checkAchievements = () => {
+    const updated = [];
+    if (data.KebabClicks >= 10) {
+      const achievement = functions.findAchivement("First Bite");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.KebabClicks >= 100) {
+      const achievement = functions.findAchivement("Kebab Interest");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.KebabClicks >= 1000) {
+      const achievement = functions.findAchivement("Kebab Enthusiast");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.kebabs >= 5000) {
+      const achievement = functions.findAchivement("Humble Beginnings");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.kebabs >= 50_000) {
+      const achievement = functions.findAchivement("Kebab Empire");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Grill Assistant").owned > 0) {
+      const achievement = functions.findAchivement("Assistant Manager");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Sauce Bot").owned > 0) {
+      const achievement = functions.findAchivement("Saucy Business");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Kebab Delivery Scooter").owned > 0) {
+      const achievement = functions.findAchivement("On the Road");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.researches.find((r) => r.researched)) {
+      const achievement = functions.findAchivement("Research Pioneer");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.researches.filter((r) => r.researched).length >= 5) {
+      const achievement = functions.findAchivement("Knowledge Seeker");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.prestigedAmount > 0) {
+      const achievement = functions.findAchivement("Prestigious Kebab");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.prestigedAmount >= 5) {
+      const achievement = functions.findAchivement("Prestige Master");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.hasResearched(findResearch("Golden Kebab"))) {
+      const achievement = functions.findAchivement("Golden Touch");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Kebab Shop").owned > 0) {
+      const achievement = functions.findAchivement("Franchising");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Kebab Delivery Scooter").owned >= 10) {
+      const achievement = functions.findAchivement("Full Fleet");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Sauce Bot").owned >= 25) {
+      const achievement = functions.findAchivement("Secret Sauce Revealed!");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (functions.findGenerator("Grill Assistant").owned >= 100) {
+      const achievement = functions.findAchivement("Mini Army");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.researches.find((r) => !r.researched)) {
+      const achievement = functions.findAchivement("Kebab Connoisseur");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+    if (data.kebabsPerSecond >= 305_000) {
+      const achievement = functions.findAchivement("Solve World Hunger");
+      if (achievement) {
+        achievement.completed = true;
+      }
+      updated.push(achievement);
+    }
+  };
 
   const playedForAdd = useCallback(() => {
     // add 1 second.
@@ -111,6 +251,7 @@ export default function Game() {
         ...newPrestigeOverride(),
         prestiges: newPrestiges,
         prestigeKebabMultiplier: newBaseMultiplier,
+        prestigedAmount: prevData.prestigedAmount + 1,
         researchPoints: newResearchPoints,
       }));
     }
@@ -158,6 +299,13 @@ export default function Game() {
     [clickFxs],
   );
 
+  const findAchivement = useCallback((name: string) => {
+    return dataRef.current.achievements.find((a) => a.name == name);
+  }, []);
+  const findGenerator = useCallback((name: string) => {
+    return dataRef.current.generators.find((g) => g.name == name);
+  }, []);
+
   const hasResearched = useCallback((r: ResearchData) => {
     if (
       dataRef.current.researches.find(
@@ -193,9 +341,11 @@ export default function Game() {
     setClickFxs: setClickFxs,
     hasResearched: hasResearched,
     findResearch: findResearch,
+    findAchivement: findAchivement,
+    findGenerator: findGenerator,
   };
 
-  useEffect(() => {
+  const recalculateKPS_KPC = () => {
     let kebabsPerSecond = 0;
     let kebabsPerClick = 100;
 
@@ -216,13 +366,13 @@ export default function Game() {
 
       kebabsPerClick += mul * (g.owned * g.baseProduction);
       kebabsPerSecond += mul * (g.owned * g.automaticProduction);
+      setData((prevData) => ({
+        ...prevData,
+        kebabsPerClick: kebabsPerClick,
+        kebabsPerSecond: kebabsPerSecond,
+      }));
     });
-    setData((prevData) => ({
-      ...prevData,
-      kebabsPerClick: kebabsPerClick,
-      kebabsPerSecond: kebabsPerSecond,
-    }));
-  }, [data.kebabs]);
+  };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -230,6 +380,7 @@ export default function Game() {
       determineRank();
       autoKebabProduction();
       playedForAdd();
+      recalculateKPS_KPC();
     }, 1000);
 
     // Cleanup the interval when the component unmounts or this effect re-runs
