@@ -48,7 +48,6 @@ export default function Game() {
       kebabClick: kebabsound,
       buttonClick: new Audio("./buttonClick.wav"),
     });
-    console.log(audioData);
   }, []);
 
   useEffect(() => {
@@ -125,152 +124,95 @@ export default function Game() {
 
   // Achievements
   const checkAchievements = () => {
-    const updated: Achievement[] = [];
-    if (data.KebabClicks >= 10) {
-      const achievement: Achievement = functions.findAchivement("First Bite");
-      if (achievement) {
-        achievement.completed = true;
+    // a mutable copy of the current achievements so its not directly modifying the state prematurely,
+    const allAchievements: Achievement[] = dataRef.current.achievements.map(
+      (a) => ({ ...a }),
+    );
+
+    const setAchievementCompleted = (name: string) => {
+      const achievementToUpdate = allAchievements.find((a) => a.name === name);
+      if (achievementToUpdate) {
+        // Only mark as complete if not already completed
+        if (!achievementToUpdate.completed) {
+          achievementToUpdate.completed = true;
+        }
       }
-      updated.push(achievement);
+    };
+
+    // Kebab Clicks achievements
+    if (dataRef.current.KebabClicks >= 10) {
+      setAchievementCompleted("First Bite");
     }
-    if (data.KebabClicks >= 100) {
-      const achievement = functions.findAchivement("Kebab Interest");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+    if (dataRef.current.KebabClicks >= 100) {
+      setAchievementCompleted("Kebab Interest");
     }
-    if (data.KebabClicks >= 1000) {
-      const achievement = functions.findAchivement("Kebab Enthusiast");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+    if (dataRef.current.KebabClicks >= 1000) {
+      setAchievementCompleted("Kebab Enthusiast");
     }
-    if (data.kebabs >= 5000) {
-      const achievement = functions.findAchivement("Humble Beginnings");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+
+    // Kebabs Produced achievements
+    if (dataRef.current.kebabs >= 5000) {
+      setAchievementCompleted("Humble Beginnings");
     }
-    if (data.kebabs >= 50_000) {
-      const achievement = functions.findAchivement("Kebab Empire");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+    if (dataRef.current.kebabs >= 50_000) {
+      setAchievementCompleted("Kebab Empire");
     }
+
+    // Generator ownership achievements
     if (functions.findGenerator("Grill Assistant").owned > 0) {
-      const achievement = functions.findAchivement("Assistant Manager");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Assistant Manager");
     }
     if (functions.findGenerator("Sauce Bot").owned > 0) {
-      const achievement = functions.findAchivement("Saucy Business");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Saucy Business");
     }
     if (functions.findGenerator("Kebab Delivery Scooter").owned > 0) {
-      const achievement = functions.findAchivement("On the Road");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.researches.find((r) => r.researched)) {
-      const achievement = functions.findAchivement("Research Pioneer");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.researches.filter((r) => r.researched).length >= 5) {
-      const achievement = functions.findAchivement("Knowledge Seeker");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.prestigedAmount > 0) {
-      const achievement = functions.findAchivement("Prestigious Kebab");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.prestigedAmount >= 5) {
-      const achievement = functions.findAchivement("Prestige Master");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (functions.hasResearched(findResearch("Golden Kebab"))) {
-      const achievement = functions.findAchivement("Golden Touch");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("On the Road");
     }
     if (functions.findGenerator("Kebab Shop").owned > 0) {
-      const achievement = functions.findAchivement("Franchising");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Franchising");
     }
+
+    // Generator quantity achievements
     if (functions.findGenerator("Kebab Delivery Scooter").owned >= 10) {
-      const achievement = functions.findAchivement("Full Fleet");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Full Fleet");
     }
     if (functions.findGenerator("Sauce Bot").owned >= 25) {
-      const achievement = functions.findAchivement("Secret Sauce Revealed!");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Secret Sauce Revealed!");
     }
     if (functions.findGenerator("Grill Assistant").owned >= 100) {
-      const achievement = functions.findAchivement("Mini Army");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.researches.find((r) => !r.researched)) {
-      // unlock all research
-      const achievement = functions.findAchivement("Kebab Connoisseur");
-      console.log("ALL RESEARCHS HAVE BEEN DONE.");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
-    }
-    if (data.kebabsPerSecond >= 305_000) {
-      const achievement = functions.findAchivement("Solve World Hunger");
-      if (achievement) {
-        achievement.completed = true;
-      }
-      updated.push(achievement);
+      setAchievementCompleted("Mini Army");
     }
 
-    // get all achievements that havent been completed.
-    const old = dataRef.current.achievements.filter((o) => {
-      const found = updated.find((item) => item.name === o.name);
-      return found !== undefined;
-    });
-    console.log("OLDDDD", old);
+    // Research achievements
+    // check if *any* meet the condition
+    if (dataRef.current.researches.some((r) => r.researched)) {
+      setAchievementCompleted("Research Pioneer");
+    }
+    if (dataRef.current.researches.filter((r) => r.researched).length >= 5) {
+      setAchievementCompleted("Knowledge Seeker");
+    }
+    if (!dataRef.current.researches.find((r) => !r.researched)) {
+      setAchievementCompleted("Kebab Connoisseur");
+      console.log("ALL RESEARCHES HAVE BEEN DONE.");
+    }
+    if (functions.hasResearched(functions.findResearch("Golden Kebab"))) {
+      setAchievementCompleted("Golden Touch");
+    }
 
-    const newAchievements: Achievement[] = [...old, ...updated];
-    setData((prevData) => ({ ...prevData, achievements: newAchievements }));
+    // Prestige achievements
+    if (dataRef.current.prestigedAmount > 0) {
+      setAchievementCompleted("Prestigious Kebab");
+    }
+    if (dataRef.current.prestigedAmount >= 5) {
+      setAchievementCompleted("Prestige Master");
+    }
+
+    // Kebabs Per Second achievement
+    if (dataRef.current.kebabsPerSecond >= 305_000) {
+      setAchievementCompleted("Solve World Hunger");
+    }
+
+    setData((prevData) => ({ ...prevData, achievements: allAchievements }));
   };
 
   const playedForAdd = useCallback(() => {
@@ -319,7 +261,7 @@ export default function Game() {
   }, [changeRank]);
 
   const loadData = useCallback((saveData: object) => {
-    console.log("LOADING DATA", saveData);
+    // console.log("LOADING DATA", saveData);
     setData(saveData as GameData);
   }, []);
 

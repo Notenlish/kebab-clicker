@@ -119,8 +119,9 @@ export default function Kebab({
         <div className="w-full aspect-auto grid place-content-center">
           <Image
             onClick={handleKebabClick} // Use the new handler
-            className="cursor-pointer"
+            className="cursor-pointer h-auto w-auto"
             ref={kebabRef}
+            priority
             src="./kebab.png"
             alt="kebab"
             width="256"
