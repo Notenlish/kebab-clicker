@@ -48,3 +48,9 @@ export type GameFunctions = {
   startGame: () => void;
   researchUpgrade: (res: ResearchData) => void;
 };
+
+export interface ClickFx {
+  xpos: number;
+  ypos: number;
+  disabled: boolean;
+}

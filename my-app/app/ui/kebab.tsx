@@ -3,7 +3,7 @@ import { TypographyH2 } from "./typography";
 import Image from "next/image";
 
 import gsap from "gsap";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 
 import KebabRollsBg from "./rollsBg";
@@ -14,6 +14,9 @@ import {
   ultimateKebabsPerSecond,
 } from "@/lib/utils";
 
+import { ClickFx } from "@/lib/types";
+import KebabFx from "./kebabFx";
+
 export default function Kebab({
   functions,
   data,
@@ -21,6 +24,8 @@ export default function Kebab({
   functions: GameFunctions;
   data: GameData;
 }) {
+  const [clickFxs, setClickFxs] = useState<ClickFx[]>([]);
+
   const counterRef = useRef(null);
   const kebabRef = useRef(null);
   const rankTextRef = useRef(null);
@@ -63,6 +68,7 @@ export default function Kebab({
     <div className="relative overflow-clip">
       <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative">
         <KebabRollsBg></KebabRollsBg>
+        <KebabFx data={data} functions={functions} clickFxs={clickFxs} />
         <br />
         <TypographyH2>
           <div>Rank: </div>

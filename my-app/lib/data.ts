@@ -119,8 +119,8 @@ export const possibleGenerators: GeneratorData[] = [
     unitImage: "./generators/kebab-shop.png",
     buttonImage: "./generators/kebab-shop-small.png",
     baseCost: 5000,
-    baseProduction: 5,
-    automaticProduction: 25,
+    baseProduction: 10,
+    automaticProduction: 40,
     backgroundImage: "./generators/kebab-shopBG.png",
     owned: 0,
     id: 3,
@@ -195,7 +195,7 @@ export const ranksData = [
   },
   {
     name: "Turkish Kebab Sultan",
-    requiredKebabs: 50_000_000_000,
+    requiredKebabs: 10_000_000_000,
     rankId: 9,
   },
 ].sort((a, b) => a.rankId - b.rankId);
