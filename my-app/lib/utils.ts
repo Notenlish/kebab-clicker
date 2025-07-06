@@ -64,6 +64,9 @@ export function ultimateKebabsPerClick(
   if (functions.hasResearched(functions.findResearch("Golden Kebab"))) {
     mul *= 2;
   }
+  if (functions.hasResearched(functions.findResearch("Steel Skewers"))) {
+    mul *= 1.05;
+  }
 
   if (
     functions.hasResearched(

@@ -185,6 +185,10 @@ export default function Game() {
     if (kebabshop && kebabshop.owned > 0) {
       setAchievementCompleted("Franchising");
     }
+    const turkishkebabmaster = functions.findGenerator("Turkish Kebab Master");
+    if (turkishkebabmaster && turkishkebabmaster.owned > 0) {
+      setAchievementCompleted("The Legend of the Döner");
+    }
 
     // Generator quantity achievements
     if (deliveryScooter && deliveryScooter.owned >= 10) {
@@ -224,6 +228,17 @@ export default function Game() {
     // Kebabs Per Second achievement
     if (dataRef.current.kebabsPerSecond >= 305_000) {
       setAchievementCompleted("Solve World Hunger");
+    }
+
+    // Ranks
+    if (dataRef.current.rank == "Salt Bae") {
+      setAchievementCompleted("Salt It");
+    }
+    if (dataRef.current.rank == "Kebab Kingpin") {
+      setAchievementCompleted("Organized Döner Crime");
+    }
+    if (dataRef.current.rank == "Turkish Kebab Sultan") {
+      setAchievementCompleted("Ottoman Empire is Back");
     }
 
     setData((prevData) => ({ ...prevData, achievements: allAchievements }));

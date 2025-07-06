@@ -142,6 +142,30 @@ export const possibleAchievements: Achievement[] = [
     description: "Reach 305,000 Kebabs per second(KPS).",
     completed: false,
   },
+  {
+    id: 19,
+    name: "The Legend of the Döner",
+    description: "Have at least 1 Turkish Kebab Master",
+    completed: false,
+  },
+  {
+    id: 20,
+    name: "Salt It",
+    description: "Reach the rank: 'Salt Bae'.",
+    completed: false,
+  },
+  {
+    id: 21,
+    name: "Organized Döner Crime",
+    description: "Reach the rank: 'Kebab Kingpin'.",
+    completed: false,
+  },
+  {
+    id: 22,
+    name: "Ottoman Empire is Back",
+    description: "Reach the rank: 'Turkish Kebab Sultan'.",
+    completed: false,
+  },
 ];
 
 export const possibleResearches: ResearchData[] = [
@@ -190,10 +214,17 @@ export const possibleResearches: ResearchData[] = [
   },
   {
     name: "Secret Ingredient Discovery",
-    description: "Provides a permanent 5% bonus to all Kebab production.",
+    description: "Provides a permanent 10% bonus to all Kebab production.",
     cost: 3,
     researched: false,
     id: 6,
+  },
+  {
+    name: "Steel Skewers",
+    description: "Increases kebabs per click by 5%.",
+    cost: 3,
+    researched: false,
+    id: 7,
   },
 ];
 
@@ -296,32 +327,32 @@ export const ranksData = [
   },
   {
     name: "Grill Guru",
-    requiredKebabs: 100_000,
+    requiredKebabs: 50_000,
     rankId: 4,
   },
   {
     name: "Salt Bae",
-    requiredKebabs: 1_000_000,
+    requiredKebabs: 200_000,
     rankId: 5,
   },
   {
-    name: "Doner Man",
-    requiredKebabs: 10_000_000,
+    name: "Döner Man",
+    requiredKebabs: 500_000,
     rankId: 6,
   },
   {
     name: "Kebab Kingpin",
-    requiredKebabs: 100_000_000,
+    requiredKebabs: 1_000_000,
     rankId: 7,
   },
   {
     name: "Supreme Skewerd",
-    requiredKebabs: 1_000_000_000,
+    requiredKebabs: 10_000_000,
     rankId: 8,
   },
   {
     name: "Turkish Kebab Sultan",
-    requiredKebabs: 10_000_000_000,
+    requiredKebabs: 100_000_000,
     rankId: 9,
   },
 ].sort((a, b) => a.rankId - b.rankId);
