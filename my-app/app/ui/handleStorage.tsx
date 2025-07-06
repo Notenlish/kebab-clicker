@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { GameFunctions, GameData } from "@/lib/types";
 
 import Seperator from "./Seperator";
+import CustomButton from "./button";
 
 export default function HandleStorage({
   functions,
@@ -49,14 +50,16 @@ export default function HandleStorage({
 
   return (
     <div className="bg-orange-200 py-4 pb-8 relative overflow-clip">
-      <button
-        onClick={() => {
-          resetSave();
-        }}
-        className="ml-4 bg-neutral-50 rounded cursor-pointer border border-black white p-4"
-      >
-        Reset Save
-      </button>
+      <div className="ml-4">
+        <CustomButton
+          functions={functions}
+          func2call={() => {
+            resetSave();
+          }}
+        >
+          Reset Save
+        </CustomButton>
+      </div>
       <Seperator
         width={640}
         height={16}

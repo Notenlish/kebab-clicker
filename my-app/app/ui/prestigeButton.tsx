@@ -3,6 +3,7 @@ import Seperator from "./Seperator";
 import KebabCostLabel from "./kebabCostLabel";
 import { calculatePrestigeCost } from "@/lib/utils";
 import { GameData, GameFunctions } from "@/lib/types";
+import CustomButton from "./button";
 
 export default function PrestigeButton({
   functions,
@@ -18,19 +19,19 @@ export default function PrestigeButton({
         second and provides a research point.
       </TypographyP>
       <br></br>
-      <button
-        onClick={() => {
+      <CustomButton
+        functions={functions}
+        func2call={() => {
           console.log("skibidi");
           functions.doPrestige();
         }}
-        className="border cursor-pointer border-black bg-neutral-50 p-4 py-2 rounded flex gap-4 items-center"
       >
         Prestige{" "}
         <KebabCostLabel
           owned={data.kebabs}
           cost={calculatePrestigeCost(data.basePrestigeCost, data.prestiges)}
         />
-      </button>
+      </CustomButton>
       <Seperator
         width={640}
         height={16}

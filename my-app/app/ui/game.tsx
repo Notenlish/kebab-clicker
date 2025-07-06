@@ -7,6 +7,7 @@ import {
   GeneratorData,
   ResearchData,
   ClickFx,
+  Achievement,
 } from "@/lib/types";
 
 import { useEffect, useCallback, useRef, useState } from "react";
@@ -22,10 +23,33 @@ import {
 gsap.registerPlugin(useGSAP);
 import { emptyData } from "@/lib/data";
 
+interface AudioData {
+  achievement: HTMLAudioElement;
+  kebabClick: HTMLAudioElement;
+  buttonClick: HTMLAudioElement;
+}
+
 export default function Game() {
+  const [audioData, setAudioData] = useState<AudioData>();
+  const audioRef = useRef(audioData);
   const [data, setData] = useState<GameData>(emptyData());
   const dataRef = useRef(data);
   const [clickFxs, setClickFxs] = useState<ClickFx[]>([]);
+
+  useEffect(() => {
+    audioRef.current = audioData;
+  }, [audioData]);
+
+  useEffect(() => {
+    const kebabsound = new Audio("./kebabClick.wav");
+    kebabsound.volume = 0.3;
+    setAudioData({
+      achievement: new Audio("./achievement.wav"),
+      kebabClick: kebabsound,
+      buttonClick: new Audio("./buttonClick.wav"),
+    });
+    console.log(audioData);
+  }, []);
 
   useEffect(() => {
     dataRef.current = data;
@@ -82,6 +106,7 @@ export default function Game() {
   );
 
   const addKebab = useCallback((amount: number) => {
+    audioRef.current?.kebabClick.play();
     setData((prevData) => ({
       ...prevData,
       kebabs:
@@ -98,10 +123,11 @@ export default function Game() {
     }));
   }, []);
 
+  // Achievements
   const checkAchievements = () => {
-    const updated = [];
+    const updated: Achievement[] = [];
     if (data.KebabClicks >= 10) {
-      const achievement = functions.findAchivement("First Bite");
+      const achievement: Achievement = functions.findAchivement("First Bite");
       if (achievement) {
         achievement.completed = true;
       }
@@ -220,7 +246,9 @@ export default function Game() {
       updated.push(achievement);
     }
     if (data.researches.find((r) => !r.researched)) {
+      // unlock all research
       const achievement = functions.findAchivement("Kebab Connoisseur");
+      console.log("ALL RESEARCHS HAVE BEEN DONE.");
       if (achievement) {
         achievement.completed = true;
       }
@@ -233,6 +261,16 @@ export default function Game() {
       }
       updated.push(achievement);
     }
+
+    // get all achievements that havent been completed.
+    const old = dataRef.current.achievements.filter((o) => {
+      const found = updated.find((item) => item.name === o.name);
+      return found !== undefined;
+    });
+    console.log("OLDDDD", old);
+
+    const newAchievements: Achievement[] = [...old, ...updated];
+    setData((prevData) => ({ ...prevData, achievements: newAchievements }));
   };
 
   const playedForAdd = useCallback(() => {
@@ -326,6 +364,12 @@ export default function Game() {
     return r;
   }, []);
 
+  const playSound = useCallback((name: string) => {
+    // @ts-expect-error ...
+    const a: HTMLAudioElement = audioRef.current[name];
+    a.play();
+  }, []);
+
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
@@ -343,6 +387,7 @@ export default function Game() {
     findResearch: findResearch,
     findAchivement: findAchivement,
     findGenerator: findGenerator,
+    playSound: playSound,
   };
 
   const recalculateKPS_KPC = () => {
@@ -381,6 +426,7 @@ export default function Game() {
       autoKebabProduction();
       playedForAdd();
       recalculateKPS_KPC();
+      checkAchievements();
     }, 1000);
 
     // Cleanup the interval when the component unmounts or this effect re-runs

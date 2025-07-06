@@ -10,7 +10,9 @@ import HandleStorage from "./handleStorage";
 import ResearchShop from "./researchShop";
 
 import { useState } from "react";
-import { ClickFx } from "@/lib/types";
+import CustomButton from "./button";
+
+import Achievements from "./achievements";
 
 export default function GameUI({
   functions,
@@ -19,11 +21,10 @@ export default function GameUI({
 }: {
   functions: GameFunctions;
   data: GameData;
-  clickFxs: ClickFx[],
+  clickFxs: ClickFx[];
 }) {
-  const [rightMenu, setRightMenu] = useState<"generatorStore" | "researchShop">(
-    "generatorStore",
-  );
+  const possibleMenu = ["generatorStore", "researchShop", "achievements"];
+  const [rightMenu, setRightMenu] = useState<number>(0);
 
   return (
     <div className="min-h-screen grid grid-cols-3 bg-yellow-900 overflow-clip">
@@ -35,23 +36,22 @@ export default function GameUI({
       </div>
       <GeneratorVisuals functions={functions} data={data} />
       <div className="h-full w-full">
-        <button
-          className="m-2 rounded cursor-pointer border border-black p-4 bg-white"
-          onClick={() => {
-            if (rightMenu == "generatorStore") {
-              setRightMenu("researchShop");
-              console.log("CHANGED TO RESEARCH SHHOP");
-            } else {
-              setRightMenu("generatorStore");
-            }
-          }}
-        >
-          {rightMenu == "generatorStore" ? "Research Shop" : "Generator Store"}
-        </button>
-        {rightMenu == "generatorStore" ? (
+        <div className="m-2">
+          <CustomButton
+            functions={functions}
+            func2call={() => {
+              setRightMenu((rightMenu + 1) % possibleMenu.length);
+            }}
+          >
+            {possibleMenu[rightMenu]}
+          </CustomButton>
+        </div>
+        {rightMenu == 0 ? (
           <GeneratorStore functions={functions} data={data} />
-        ) : (
+        ) : rightMenu == 1 ? (
           <ResearchShop functions={functions} data={data} />
+        ) : (
+          <Achievements data={data} functions={functions} />
         )}
       </div>
     </div>

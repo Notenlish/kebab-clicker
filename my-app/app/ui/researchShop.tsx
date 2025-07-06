@@ -21,7 +21,12 @@ export default function ResearchShop({
             <div className="flex gap-4 mt-4 items-center justify-between">
               <TypographyH2>{e.name}</TypographyH2>
               <TypographyH2>
-                <span className="opacity-50">{e.researched ? "✓" : "✕"}</span>
+                <span
+                  className="opacity-70"
+                  style={{ color: e.researched ? "green" : "red" }}
+                >
+                  {e.researched ? "✓" : "✕"}
+                </span>
               </TypographyH2>
             </div>
             <TypographyP>{e.description}</TypographyP>

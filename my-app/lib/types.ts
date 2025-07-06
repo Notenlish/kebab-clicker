@@ -64,6 +64,8 @@ export type GameFunctions = {
   findResearch: (name: string) => ResearchData;
   findAchivement: (name: string) => Achievement | undefined;
   findGenerator: (name: string) => GeneratorData | undefined;
+  addToast: (title: string, description: string) => void;
+  playSound: (name: string) => void;
 };
 
 export interface ClickFx {
