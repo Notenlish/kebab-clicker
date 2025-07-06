@@ -13,7 +13,12 @@ import { useEffect, useCallback, useRef, useState } from "react";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ultimateUpgradeCost, calculatePrestigeCost } from "@/lib/utils";
+import {
+  ultimateUpgradeCost,
+  calculatePrestigeCost,
+  ultimateKebabsPerSecond,
+  ultimateKebabsPerClick,
+} from "@/lib/utils";
 gsap.registerPlugin(useGSAP);
 import { emptyData } from "@/lib/data";
 
@@ -48,7 +53,12 @@ export default function Game() {
 
   const buyGenerator = useCallback(
     (gen: GeneratorData) => {
-      const cost = ultimateUpgradeCost(data, gen.baseCost, gen.owned);
+      const cost = ultimateUpgradeCost(
+        data,
+        functions,
+        gen.baseCost,
+        gen.owned,
+      );
       if (data.kebabs >= cost) {
         gen.owned += 1;
         const newKebabs = data.kebabs - cost;
@@ -74,20 +84,19 @@ export default function Game() {
   const addKebab = useCallback((amount: number) => {
     setData((prevData) => ({
       ...prevData,
-      kebabs: prevData.kebabs + amount * prevData.prestigeKebabMultiplier,
+      kebabs: prevData.kebabs + ultimateKebabsPerClick(dataRef.current, functions),
     }));
   }, []);
 
   const autoKebabProduction = useCallback(() => {
     setData((prevData) => ({
       ...prevData,
-      kebabs:
-        prevData.kebabs +
-        prevData.kebabsPerSecond * prevData.prestigeKebabMultiplier,
+      kebabs: prevData.kebabs + ultimateKebabsPerSecond(dataRef.current, functions),
     }));
   }, []);
 
   const playedForAdd = useCallback(() => {
+    // add 1 second.
     setData((prevData) => ({ ...prevData, playedFor: prevData.playedFor + 1 }));
   }, []);
 
@@ -139,12 +148,35 @@ export default function Game() {
     setData(emptyData());
   }, []);
 
-  const setFxAnimated = useCallback((fx: ClickFx) => {
-    const newAnimatedFx = { ...fx, animated: true } as ClickFx;
-    const excludedFxs = clickFxs.filter((f) => fx.id != f.id);
-    const newFxs = [...excludedFxs, newAnimatedFx];
-    setClickFxs(newFxs);
-  }, [clickFxs]);
+  const setFxAnimated = useCallback(
+    (fx: ClickFx) => {
+      const newAnimatedFx = { ...fx, animated: true } as ClickFx;
+      const excludedFxs = clickFxs.filter((f) => fx.id != f.id);
+      const newFxs = [...excludedFxs, newAnimatedFx];
+      setClickFxs(newFxs);
+    },
+    [clickFxs],
+  );
+
+  const hasResearched = useCallback((r: ResearchData) => {
+    if (
+      dataRef.current.researches.find(
+        (el: ResearchData) => el.researched && el.name == r.name,
+      )
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }, []);
+
+  const findResearch = useCallback((name: string) => {
+    // @ts-expect-error ...
+    const r: ResearchData = dataRef.current.researches.find(
+      (el: ResearchData) => el.name == name,
+    );
+    return r;
+  }, []);
 
   const functions: GameFunctions = {
     addKebab: addKebab,
@@ -158,8 +190,39 @@ export default function Game() {
     startGame: startGame,
     researchUpgrade: researchUpgrade,
     setFxAnimated: setFxAnimated,
-    setClickFxs: setClickFxs
+    setClickFxs: setClickFxs,
+    hasResearched: hasResearched,
+    findResearch: findResearch,
   };
+
+  useEffect(() => {
+    let kebabsPerSecond = 0;
+    let kebabsPerClick = 100;
+
+    dataRef.current.generators.forEach((g) => {
+      let mul = g.multiplier;
+      if (
+        g.name == "Sauce Bot" &&
+        hasResearched(findResearch("Sauce Innovation"))
+      ) {
+        mul *= 2;
+      }
+      if (
+        g.name == "Kebab Delivery Scooter" &&
+        hasResearched(findResearch("Efficient Delivery Routes"))
+      ) {
+        mul *= 1.2;
+      }
+
+      kebabsPerClick += mul * (g.owned * g.baseProduction);
+      kebabsPerSecond += mul * (g.owned * g.automaticProduction);
+    });
+    setData((prevData) => ({
+      ...prevData,
+      kebabsPerClick: kebabsPerClick,
+      kebabsPerSecond: kebabsPerSecond,
+    }));
+  }, [data.kebabs]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -174,5 +237,7 @@ export default function Game() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [determineRank]); // Re-create interval if determineRank changes (which it won't due to useCallback)
 
-  return <GameUI clickFxs={clickFxs} functions={functions} data={data}></GameUI>;
+  return (
+    <GameUI clickFxs={clickFxs} functions={functions} data={data}></GameUI>
+  );
 }

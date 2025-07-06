@@ -19,7 +19,12 @@ export default function GeneratorStore({
       {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         data.generators.map((e, i) => {
-          const cost = ultimateUpgradeCost(data, e.baseCost, e.owned);
+          const cost = ultimateUpgradeCost(
+            data,
+            functions,
+            e.baseCost,
+            e.owned,
+          );
           return (
             <div key={e.id} className="h-60 p-4 bg-orange-200 relative">
               <div className="flex gap-4 mt-4 items-center justify-between">

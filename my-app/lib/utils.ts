@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { GameData } from "./types";
+import { GameData, GameFunctions } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -18,43 +18,68 @@ export function roundToNthDecimal(value: number, decimals: number) {
   return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
 }
 
-// TODO: do the sauce innovation, efficient delivery routes and secret ingredient discovery stuff.
-// todo: skibidi
 export function ultimateUpgradeCost(
   data: GameData,
+  functions: GameFunctions,
   baseCost: number,
   owned: number,
 ) {
   let mul = 1;
+
   if (
-    data.researches.filter((e) => e.name == "Customer Loyalty Program")[0]
-      .researched
+    functions.hasResearched(functions.findResearch("Customer Loyalty Program"))
   ) {
     mul = 0.95;
   }
+
   return Math.round(baseCost * 1.2 ** owned * mul);
 }
 
-export function ultimateKebabsPerSecond(data: GameData) {
+export function ultimateKebabsPerSecond(
+  data: GameData,
+  functions: GameFunctions,
+) {
   let mul = 1;
-  if (
-    data.researches.filter((e) => e.name == "Automated Slicing")[0].researched
-  ) {
+
+  if (functions.hasResearched(functions.findResearch("Automated Slicing"))) {
     mul = 1.1;
   }
+  if (
+    functions.hasResearched(
+      functions.findResearch("Secret Ingredient Discovery"),
+    )
+  ) {
+    mul *= 1.05;
+  }
+
   return data.kebabsPerSecond * data.prestigeKebabMultiplier * mul;
 }
 
-export function ultimateKebabsPerClick(data: GameData) {
+export function ultimateKebabsPerClick(
+  data: GameData,
+  functions: GameFunctions,
+) {
   let mul = 1;
-  if (data.researches.filter((e) => e.name == "Golden Kebab")[0].researched) {
+
+  if (functions.hasResearched(functions.findResearch("Golden Kebab"))) {
     mul *= 2;
   }
+
   if (
-    data.researches.filter((e) => e.name == "Advanced Grilling Techniques")[0]
-      .researched
+    functions.hasResearched(
+      functions.findResearch("Advanced Grilling Techniques"),
+    )
   ) {
     mul *= 1.25;
   }
+
+  if (
+    functions.hasResearched(
+      functions.findResearch("Secret Ingredient Discovery"),
+    )
+  ) {
+    mul *= 1.05;
+  }
+
   return data.kebabsPerClick * data.prestigeKebabMultiplier * mul;
 }

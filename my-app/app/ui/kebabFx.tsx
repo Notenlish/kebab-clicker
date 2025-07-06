@@ -28,9 +28,20 @@ export default function KebabFx({
   const animatedFxIds = useRef<Set<number>>(new Set()); // 6
 
   useEffect(() => {
-    if (containerRef.current) {
-      setBoundingRect(containerRef.current.getBoundingClientRect());
-    }
+    const updateBoundingRect = () => {
+      if (containerRef.current) {
+        setBoundingRect(containerRef.current.getBoundingClientRect());
+      }
+    };
+    updateBoundingRect(); // Initial
+
+    window.addEventListener("resize", updateBoundingRect);
+    window.addEventListener("scroll", updateBoundingRect, true);
+
+    return () => {
+      window.removeEventListener("resize", updateBoundingRect);
+      window.removeEventListener("scroll", updateBoundingRect, true);
+    };
   }, []);
 
   useGSAP(
@@ -53,7 +64,7 @@ export default function KebabFx({
           gsap.killTweensOf(imgElement); // prevent conflicts
 
           functions.setFxAnimated(fx);
-          
+
           const startRot = Math.random() * 90 - 45;
 
           const tl = gsap.timeline();

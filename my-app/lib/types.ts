@@ -19,6 +19,7 @@ export type GeneratorData = {
   owned: number;
   id: number;
   description: string;
+  multiplier: number;
 };
 
 export type GameData = {
@@ -49,6 +50,8 @@ export type GameFunctions = {
   researchUpgrade: (res: ResearchData) => void;
   setFxAnimated: (fx: ClickFx) => void;
   setClickFxs: (a: ClickFx[]) => void;
+  hasResearched: (r: ResearchData) => boolean;
+  findResearch: (name: string) => ResearchData;
 };
 
 export interface ClickFx {

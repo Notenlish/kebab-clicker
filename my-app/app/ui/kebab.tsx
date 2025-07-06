@@ -83,7 +83,7 @@ export default function Kebab({
   }, [clickFxs]); // Re-run when clickFxs changes
 
   const handleKebabClick = (event: React.MouseEvent<HTMLImageElement>) => {
-    functions.addKebab(ultimateKebabsPerClick(data));
+    functions.addKebab(ultimateKebabsPerClick(data, functions));
 
     // Get the click coordinates
     const { clientX, clientY } = event;
@@ -137,11 +137,11 @@ export default function Kebab({
           </div>
           <div>
             Kebabs per click:{" "}
-            {roundToNthDecimal(ultimateKebabsPerClick(data), 4)}
+            {roundToNthDecimal(ultimateKebabsPerClick(data, functions), 4)}
           </div>
           <div>
             Kebabs per second:{" "}
-            {roundToNthDecimal(ultimateKebabsPerSecond(data), 4)}
+            {roundToNthDecimal(ultimateKebabsPerSecond(data, functions), 4)}
           </div>
         </div>
         <div className="left-0 bottom-0 bg-gradient-to-b from-transparent to-[#e1bd85] w-full h-32 z-10"></div>

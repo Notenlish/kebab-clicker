@@ -19,7 +19,7 @@ export function newPrestigeOverride() {
     rankId: 0,
     generators: possibleGenerators,
     kebabsPerSecond: 0,
-    kebabsPerClick: 1000,
+    kebabsPerClick: 1,
   };
 }
 
@@ -88,6 +88,7 @@ export const possibleGenerators: GeneratorData[] = [
     owned: 0,
     id: 0,
     description: "A teenager flipping skewers part-time after school.",
+    multiplier: 1,
   },
   {
     name: "Sauce Bot",
@@ -101,6 +102,7 @@ export const possibleGenerators: GeneratorData[] = [
     id: 1,
     description:
       "Automatically dispenses secret sauce on each kebab for extra flavor.",
+    multiplier: 1,
   },
   {
     name: "Kebab Delivery Scooter",
@@ -113,6 +115,7 @@ export const possibleGenerators: GeneratorData[] = [
     owned: 0,
     id: 2,
     description: "Delivers tasty kebabs to people.",
+    multiplier: 1,
   },
   {
     name: "Kebab Shop",
@@ -125,6 +128,7 @@ export const possibleGenerators: GeneratorData[] = [
     owned: 0,
     id: 3,
     description: "Delivers tasty kebabs to people.",
+    multiplier: 1,
   },
   {
     name: "Turkish Kebab Master",
@@ -137,6 +141,7 @@ export const possibleGenerators: GeneratorData[] = [
     owned: 0,
     id: 4,
     description: "An old master at making Kebab.",
+    multiplier: 1,
   },
   /*
   auto griller 3000
@@ -189,7 +194,7 @@ export const ranksData = [
     rankId: 7,
   },
   {
-    name: "Supreme Skewered",
+    name: "Supreme Skewerd",
     requiredKebabs: 1_000_000_000,
     rankId: 8,
   },
