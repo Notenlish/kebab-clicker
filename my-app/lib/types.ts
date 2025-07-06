@@ -50,7 +50,8 @@ export type GameFunctions = {
 };
 
 export interface ClickFx {
-  xpos: number;
-  ypos: number;
-  disabled: boolean;
+  x: number;
+  y: number;
+  id: number;
+  timestamp: number;
 }

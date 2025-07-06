@@ -3,7 +3,7 @@ import { TypographyH2 } from "./typography";
 import Image from "next/image";
 
 import gsap from "gsap";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react"; // Import useEffect
 import { useGSAP } from "@gsap/react";
 
 import KebabRollsBg from "./rollsBg";
@@ -25,6 +25,7 @@ export default function Kebab({
   data: GameData;
 }) {
   const [clickFxs, setClickFxs] = useState<ClickFx[]>([]);
+  const nextClickFxId = useRef(0); // To generate unique IDs for click effects
 
   const counterRef = useRef(null);
   const kebabRef = useRef(null);
@@ -35,15 +36,15 @@ export default function Kebab({
       gsap.fromTo(
         counterRef.current,
         { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" },
+        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
       );
       gsap.fromTo(
         kebabRef.current,
         { scale: 1.1 },
-        { scale: 1, duration: 0.2, ease: "circ.out" },
+        { scale: 1, duration: 0.2, ease: "circ.out" }
       );
     },
-    { dependencies: [data.kebabs], scope: counterRef },
+    { dependencies: [data.kebabs], scope: counterRef }
   );
 
   useGSAP(
@@ -58,16 +59,45 @@ export default function Kebab({
           ease: "circ.inOut",
           repeat: -1,
           yoyo: true,
-        },
+        }
       );
     },
-    { dependencies: [], scope: rankTextRef },
+    { dependencies: [], scope: rankTextRef }
   );
+
+  // Effect to clean up old click effects after a delay (matching animation duration)
+  useEffect(() => {
+    if (clickFxs.length > 0) {
+      const timer = setTimeout(() => {
+        // Remove click effects that are older than, say, 1 second (adjust based on animation duration)
+        setClickFxs((prevFxs) =>
+          prevFxs.filter(
+            (fx) => Date.now() - fx.timestamp < 10_000 // Keep for 1 second
+          )
+        );
+      }, 100); // Check every 100ms
+      return () => clearTimeout(timer);
+    }
+  }, [clickFxs]); // Re-run when clickFxs changes
+
+  const handleKebabClick = (event: React.MouseEvent<HTMLImageElement>) => {
+    functions.addKebab(ultimateKebabsPerClick(data));
+
+    // Get the click coordinates
+    const { clientX, clientY } = event;
+
+    // Add a new click effect with a unique ID and timestamp
+    setClickFxs((prevFxs) => [
+      ...prevFxs,
+      { id: nextClickFxId.current++, x: clientX, y: clientY, timestamp: Date.now() },
+    ]);
+  };
 
   return (
     <div className="relative overflow-clip">
       <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative">
         <KebabRollsBg></KebabRollsBg>
+        {/* Pass the updated clickFxs state to KebabFx */}
         <KebabFx data={data} functions={functions} clickFxs={clickFxs} />
         <br />
         <TypographyH2>
@@ -79,9 +109,7 @@ export default function Kebab({
         <br />
         <div className="w-full aspect-auto grid place-content-center">
           <Image
-            onClick={() => {
-              functions.addKebab(ultimateKebabsPerClick(data));
-            }}
+            onClick={handleKebabClick} // Use the new handler
             className="cursor-pointer"
             ref={kebabRef}
             src="./kebab.png"
