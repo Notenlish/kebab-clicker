@@ -1,5 +1,12 @@
 export type Rank = string;
 
+export type Achievement = {
+  name: string;
+  id: number;
+  description: string;
+  completed: boolean;
+};
+
 export type ResearchData = {
   name: string;
   cost: number;
@@ -35,6 +42,7 @@ export type GameData = {
   playedFor: number;
   researchPoints: number;
   researches: ResearchData[];
+  achievements: Achievement[];
 };
 
 export type GameFunctions = {

@@ -1,4 +1,4 @@
-import { GeneratorData, GameData, ResearchData } from "./types";
+import { GeneratorData, GameData, ResearchData, Achievement } from "./types";
 
 export function emptyData() {
   return {
@@ -22,6 +22,123 @@ export function newPrestigeOverride() {
     kebabsPerClick: 1,
   };
 }
+
+export const possibleAchievements: Achievement[] = [
+  {
+    id: 0,
+    name: "First Bite",
+    description: "Click the kebab 10 times.",
+    completed: false,
+  },
+  {
+    id: 1,
+    name: "Kebab Interest",
+    description: "Click the kebab 100 times.",
+    completed: false,
+  },
+  {
+    id: 2,
+    name: "Kebab Enthusiast",
+    description: "Click the kebab 1,000 times.",
+    completed: false,
+  },
+  {
+    id: 3,
+    name: "Humble Beginnings",
+    description: "Produce a total of 5,000 kebabs",
+    completed: false,
+  },
+  {
+    id: 4,
+    name: "Kebab Empire",
+    description: "Produce a total of 50,000 kebabs",
+    completed: false,
+  },
+  {
+    id: 5,
+    name: "Assistant Manager",
+    description: "Purchase your first Grill Assistant.",
+    completed: false,
+  },
+  {
+    id: 6,
+    name: "Saucy Business",
+    description: "Purchase your first Sauce Bot.",
+    completed: false,
+  },
+  {
+    id: 7,
+    name: "On the Road",
+    description: "Purchase your first Kebab Delivery Scooter.",
+    completed: false,
+  },
+  {
+    id: 8,
+    name: "Research Pioneer",
+    description: "Complete your first research.",
+    completed: false,
+  },
+  {
+    id: 9,
+    name: "Knowledge Seeker",
+    description: "Complete a total of 5 different researches.",
+    completed: false,
+  },
+  {
+    id: 10,
+    name: "Prestigious Kebab",
+    description: "Prestige for the first time",
+    completed: false,
+  },
+  {
+    id: 11,
+    name: "Prestige Master",
+    description: "Prestige 5 times.",
+    completed: false,
+  },
+  {
+    id: 12,
+    name: "Golden Touch",
+    description: "Research 'Golden Kebab'.",
+    completed: false,
+  },
+  {
+    id: 13,
+    name: "Franchising",
+    description: "Buy your first Kebab Shop.",
+    completed: false,
+  },
+  {
+    id: 14,
+    name: "Full Fleet",
+    description: "Own 10 delivery scooters",
+    completed: false,
+  },
+  {
+    id: 15,
+    name: "Secret Sauce Revealed!",
+    description: "Own 25 Sauce Bots.",
+    completed: false,
+  },
+  {
+    id: 16,
+    name: "Mini Army",
+    description: "Own 100 grill assistants",
+    completed: false,
+  },
+  {
+    id: 17,
+    name: "Kebab Connoisseur",
+    description: "Unlock all research options.",
+    completed: false,
+  },
+  {
+    id: 18,
+    name: "Solve World Hunger",
+    description: "Reach 305,000 Kebabs per second(KPS).",
+    completed: false,
+  },
+];
 
 export const possibleResearches: ResearchData[] = [
   {
