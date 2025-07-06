@@ -1,6 +1,6 @@
 "use client";
 
-import { GameData, GameFunctions } from "@/lib/types";
+import { ClickFx, GameData, GameFunctions } from "@/lib/types";
 import Kebab from "./kebab";
 import GeneratorStore from "./GeneratorStore";
 import GeneratorVisuals from "./GeneratorVisuals";
@@ -10,13 +10,16 @@ import HandleStorage from "./handleStorage";
 import ResearchShop from "./researchShop";
 
 import { useState } from "react";
+import { ClickFx } from "@/lib/types";
 
 export default function GameUI({
   functions,
   data,
+  clickFxs,
 }: {
   functions: GameFunctions;
   data: GameData;
+  clickFxs: ClickFx[],
 }) {
   const [rightMenu, setRightMenu] = useState<"generatorStore" | "researchShop">(
     "generatorStore",
@@ -25,7 +28,7 @@ export default function GameUI({
   return (
     <div className="min-h-screen grid grid-cols-3 bg-yellow-900 overflow-clip">
       <div className="">
-        <Kebab functions={functions} data={data} />
+        <Kebab clickFxs={clickFxs} functions={functions} data={data} />
         <Stats functions={functions} data={data} />
         <PrestigeButton functions={functions} data={data} />
         <HandleStorage functions={functions} data={data} />

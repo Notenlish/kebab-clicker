@@ -86,6 +86,7 @@ export default function KebabRollsBg() {
       ref={containerRef}
       className="w-full -translate-y-4 -z-10 h-full absolute"
     >
+      <div className="bg-[#e1bd85] opacity-10 z-10 w-full h-full absolute"></div>
       {rolls.map((roll, _i) => (
         <Image
           key={_i}

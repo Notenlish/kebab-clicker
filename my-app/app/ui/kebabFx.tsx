@@ -1,5 +1,6 @@
 import { useGSAP } from "@gsap/react";
 import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
 
 import { GameFunctions, GameData } from "@/lib/types";
 
@@ -17,31 +18,109 @@ export default function KebabFx({
   data: GameData;
   clickFxs: ClickFx[];
 }) {
+  const kebabRollSize = 32;
+
   const mousePosition = useMousePosition();
   const [boundingRect, setBoundingRect] = useState<DOMRect | null>(null);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const imageRefs = useRef<Map<number, HTMLImageElement>>(new Map()); // 5
+  const animatedFxIds = useRef<Set<number>>(new Set()); // 6
+
+  useEffect(() => {
+    if (containerRef.current) {
+      setBoundingRect(containerRef.current.getBoundingClientRect());
+    }
+  }, []);
 
   useGSAP(
     () => {
-      for (let i = 0; i < clickFxs.length; i++) {
-        const fx = clickFxs[i];
-
-        if (!boundingRect) {
-          return;
-        }
-        
-        // when user clicks, its supposed to spawn in click Fx particles and then animate them first going up a little then going down using gsap.
+      if (!boundingRect) {
+        return;
       }
+      const newClickFxs = clickFxs.filter((fx) => !fx.animated);
+
+      newClickFxs.forEach((fx) => {
+        fx.animated = true;
+        const imgElement = imageRefs.current.get(fx.id);
+        if (imgElement) {
+          // add it to the currently animated fx ids
+          animatedFxIds.current.add(fx.id);
+
+          const startX = fx.x - kebabRollSize / 2 - boundingRect.left;
+          const startY = fx.y - kebabRollSize - boundingRect.top;
+
+          gsap.killTweensOf(imgElement); // prevent conflicts
+
+          functions.setFxAnimated(fx);
+          
+          const startRot = Math.random() * 90 - 45;
+
+          const tl = gsap.timeline();
+          tl.fromTo(
+            imgElement,
+            {
+              x: startX,
+              y: startY,
+              opacity: 1,
+              scale: 0.4,
+              rotation: startRot,
+            },
+            {
+              y: startY - 50,
+              x: startX + (Math.random() - 0.5) * 50,
+              opacity: 0.9,
+              scale: 0.9,
+              rotation: Math.random() * 180 - 90,
+              duration: 0.3,
+              ease: "power2.out",
+              onComplete: () => {
+                animatedFxIds.current.delete(fx.id); // Only remove when animation ends
+              },
+            },
+          );
+          tl.to(imgElement, {
+            y: startY + 100,
+            x: startX + (Math.random() - 0.5) * 100,
+            opacity: 0,
+            scale: 0.5,
+            rotation: Math.random() * 360,
+            duration: 0.3,
+            ease: "power2.in",
+            onComplete: () => {},
+          });
+        }
+      });
     },
-    { dependencies: [boundingRect], scope: containerRef },
+    { dependencies: [clickFxs, boundingRect], scope: containerRef },
   );
 
   return (
     <div ref={containerRef} className="w-full absolute h-full">
-      {clickFxs.map((e, i) => {
+      {clickFxs.map((fx, i) => {
         return (
-          <Image key={i} alt="" width={32} height={32} src="./kebab-roll.png" />
+          <Image
+            key={fx.id}
+            ref={(el) => {
+              if (el) {
+                imageRefs.current.set(fx.id, el);
+              } else {
+                imageRefs.current.delete(fx.id);
+                // ALSO NEW: Remove from animatedFxIds when element unmounts
+                animatedFxIds.current.delete(fx.id);
+              }
+            }}
+            alt=""
+            width={kebabRollSize}
+            height={kebabRollSize}
+            src="./kebab-roll.png"
+            style={{
+              zIndex: 20,
+              position: "absolute",
+              pointerEvents: "none",
+              transform: "translate(-50%, -50%)",
+            }}
+          />
         );
       })}
     </div>

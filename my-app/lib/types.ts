@@ -47,6 +47,8 @@ export type GameFunctions = {
   loadData: (saveData: object) => void;
   startGame: () => void;
   researchUpgrade: (res: ResearchData) => void;
+  setFxAnimated: (fx: ClickFx) => void;
+  setClickFxs: (a: ClickFx[]) => void;
 };
 
 export interface ClickFx {
@@ -54,4 +56,5 @@ export interface ClickFx {
   y: number;
   id: number;
   timestamp: number;
+  animated: boolean;
 }

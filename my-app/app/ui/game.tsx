@@ -6,6 +6,7 @@ import {
   GameFunctions,
   GeneratorData,
   ResearchData,
+  ClickFx,
 } from "@/lib/types";
 
 import { useEffect, useCallback, useRef, useState } from "react";
@@ -19,6 +20,7 @@ import { emptyData } from "@/lib/data";
 export default function Game() {
   const [data, setData] = useState<GameData>(emptyData());
   const dataRef = useRef(data);
+  const [clickFxs, setClickFxs] = useState<ClickFx[]>([]);
 
   useEffect(() => {
     dataRef.current = data;
@@ -137,6 +139,13 @@ export default function Game() {
     setData(emptyData());
   }, []);
 
+  const setFxAnimated = useCallback((fx: ClickFx) => {
+    const newAnimatedFx = { ...fx, animated: true } as ClickFx;
+    const excludedFxs = clickFxs.filter((f) => fx.id != f.id);
+    const newFxs = [...excludedFxs, newAnimatedFx];
+    setClickFxs(newFxs);
+  }, [clickFxs]);
+
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
@@ -148,6 +157,8 @@ export default function Game() {
     loadData: loadData,
     startGame: startGame,
     researchUpgrade: researchUpgrade,
+    setFxAnimated: setFxAnimated,
+    setClickFxs: setClickFxs
   };
 
   useEffect(() => {
@@ -163,5 +174,5 @@ export default function Game() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [determineRank]); // Re-create interval if determineRank changes (which it won't due to useCallback)
 
-  return <GameUI functions={functions} data={data}></GameUI>;
+  return <GameUI clickFxs={clickFxs} functions={functions} data={data}></GameUI>;
 }

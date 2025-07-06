@@ -20,11 +20,12 @@ import KebabFx from "./kebabFx";
 export default function Kebab({
   functions,
   data,
+  clickFxs,
 }: {
   functions: GameFunctions;
   data: GameData;
+  clickFxs: ClickFx[];
 }) {
-  const [clickFxs, setClickFxs] = useState<ClickFx[]>([]);
   const nextClickFxId = useRef(0); // To generate unique IDs for click effects
 
   const counterRef = useRef(null);
@@ -36,15 +37,15 @@ export default function Kebab({
       gsap.fromTo(
         counterRef.current,
         { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }
+        { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" },
       );
       gsap.fromTo(
         kebabRef.current,
         { scale: 1.1 },
-        { scale: 1, duration: 0.2, ease: "circ.out" }
+        { scale: 1, duration: 0.2, ease: "circ.out" },
       );
     },
-    { dependencies: [data.kebabs], scope: counterRef }
+    { dependencies: [data.kebabs], scope: counterRef },
   );
 
   useGSAP(
@@ -59,10 +60,10 @@ export default function Kebab({
           ease: "circ.inOut",
           repeat: -1,
           yoyo: true,
-        }
+        },
       );
     },
-    { dependencies: [], scope: rankTextRef }
+    { dependencies: [], scope: rankTextRef },
   );
 
   // Effect to clean up old click effects after a delay (matching animation duration)
@@ -70,10 +71,11 @@ export default function Kebab({
     if (clickFxs.length > 0) {
       const timer = setTimeout(() => {
         // Remove click effects that are older than, say, 1 second (adjust based on animation duration)
-        setClickFxs((prevFxs) =>
+        // @ts-expect-error ...
+        functions.setClickFxs((prevFxs) =>
           prevFxs.filter(
-            (fx) => Date.now() - fx.timestamp < 10_000 // Keep for 1 second
-          )
+            (fx) => Date.now() - fx.timestamp < 1_000, // Keep for 1 second
+          ),
         );
       }, 100); // Check every 100ms
       return () => clearTimeout(timer);
@@ -87,9 +89,16 @@ export default function Kebab({
     const { clientX, clientY } = event;
 
     // Add a new click effect with a unique ID and timestamp
-    setClickFxs((prevFxs) => [
+    // @ts-expect-error ...
+    functions.setClickFxs((prevFxs: ClickFx[]) => [
       ...prevFxs,
-      { id: nextClickFxId.current++, x: clientX, y: clientY, timestamp: Date.now() },
+      {
+        id: nextClickFxId.current++,
+        x: clientX,
+        y: clientY,
+        timestamp: Date.now(),
+        animated: false,
+      },
     ]);
   };
 
