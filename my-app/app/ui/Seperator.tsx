@@ -18,7 +18,7 @@ export default function Seperator({
 }) {
   return (
     <Image
-      className="absolute z-10 bg-repeat select-none"
+      className="absolute z-10 bg-repeat select-none h-full"
       src={orientation == "vertical" ? "./wall.png" : "./wall-horizontal.png"}
       alt=""
       style={{

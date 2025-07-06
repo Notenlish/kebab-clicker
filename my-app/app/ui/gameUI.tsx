@@ -13,6 +13,7 @@ import { useState } from "react";
 import CustomButton from "./button";
 
 import Achievements from "./achievements";
+import RanksDisplay from "./ranksDisplay";
 
 export default function GameUI({
   functions,
@@ -23,7 +24,7 @@ export default function GameUI({
   data: GameData;
   clickFxs: ClickFx[];
 }) {
-  const possibleMenu = ["generatorStore", "researchShop", "achievements"];
+  const possibleMenu = ["Store", "Research", "Achievements", "Rank Display"];
   const [rightMenu, setRightMenu] = useState<number>(0);
 
   return (
@@ -50,8 +51,10 @@ export default function GameUI({
           <GeneratorStore functions={functions} data={data} />
         ) : rightMenu == 1 ? (
           <ResearchShop functions={functions} data={data} />
-        ) : (
+        ) : rightMenu == 2 ? (
           <Achievements data={data} functions={functions} />
+        ) : (
+          <RanksDisplay data={data} />
         )}
       </div>
     </div>

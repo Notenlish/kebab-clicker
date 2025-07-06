@@ -1,4 +1,8 @@
-export type Rank = string;
+export type Rank = {
+  name: string;
+  requiredKebabs: number;
+  rankId: number;
+};
 
 export type Achievement = {
   name: string;
@@ -33,6 +37,7 @@ export type GameData = {
   kebabs: number;
   rank: string;
   rankId: number;
+  ranks: Rank[];
   generators: GeneratorData[];
   kebabsPerSecond: number;
   kebabsPerClick: number;

@@ -1,4 +1,10 @@
-import { GeneratorData, GameData, ResearchData, Achievement } from "./types";
+import {
+  GeneratorData,
+  GameData,
+  ResearchData,
+  Achievement,
+  Rank,
+} from "./types";
 
 export function emptyData() {
   return {
@@ -12,6 +18,7 @@ export function emptyData() {
     achievements: possibleAchievements,
     KebabClicks: 0,
     prestigedAmount: 0,
+    ranks: ranksData,
   } as GameData;
 }
 
