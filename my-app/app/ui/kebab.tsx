@@ -14,6 +14,8 @@ import {
   ultimateKebabsPerSecond,
 } from "@/lib/utils";
 
+import TimedMultiplierComponent from "./timedMultiplier";
+
 import { ClickFx } from "@/lib/types";
 import KebabFx from "./kebabFx";
 
@@ -28,6 +30,7 @@ export default function Kebab({
 }) {
   const nextClickFxId = useRef(0); // To generate unique IDs for click effects
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const counterRef = useRef(null);
   const kebabRef = useRef(null);
   const rankTextRef = useRef(null);
@@ -80,7 +83,7 @@ export default function Kebab({
       }, 100); // Check every 100ms
       return () => clearTimeout(timer);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clickFxs]); // Re-run when clickFxs changes
 
   const handleKebabClick = (event: React.MouseEvent<HTMLImageElement>) => {
@@ -105,9 +108,13 @@ export default function Kebab({
 
   return (
     <div className="relative overflow-clip">
-      <div className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative">
+      <div
+        ref={containerRef}
+        className="flex overflow-clip z-10 flex-col items-center justify-start min-h-screen bg-[#e1bd85] relative"
+      >
         <KebabRollsBg></KebabRollsBg>
-        {/* Pass the updated clickFxs state to KebabFx */}
+
+        {/* <TimedMultiplierComponent containerRef={containerRef} data={data} functions={functions} /> */}
         <KebabFx functions={functions} clickFxs={clickFxs} />
         <br />
         <TypographyH2>

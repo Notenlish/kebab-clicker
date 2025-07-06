@@ -1,3 +1,13 @@
+export type TimedMultiplier = {
+  name: string;
+  clickMultiplier: number;
+  autoMultiplier: number;
+  id: number;
+  timestamp: number;
+  activated: boolean;
+  image: string;
+};
+
 export type Rank = {
   name: string;
   requiredKebabs: number;
@@ -50,6 +60,8 @@ export type GameData = {
   researchPoints: number;
   researches: ResearchData[];
   achievements: Achievement[];
+  timedMultiplier: TimedMultiplier | null;
+  timedMultipliers: TimedMultiplier[];
 };
 
 export type GameFunctions = {
@@ -70,6 +82,10 @@ export type GameFunctions = {
   findAchivement: (name: string) => Achievement | undefined;
   findGenerator: (name: string) => GeneratorData | undefined;
   playSound: (name: string) => void;
+  setTimedMultiplier: (tm: TimedMultiplier) => void;
+  findTimedMultiplier: (name: string) => TimedMultiplier | undefined;
+  autoTimedMultiplierCheck: () => void;
+  getRandomTimedMultiplier: () => TimedMultiplier;
 };
 
 export interface ClickFx {

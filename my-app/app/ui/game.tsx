@@ -8,6 +8,7 @@ import {
   ResearchData,
   ClickFx,
   Achievement,
+  TimedMultiplier,
 } from "@/lib/types";
 
 import { toast } from "sonner";
@@ -341,6 +342,31 @@ export default function Game() {
     a.play();
   }, []);
 
+  const findTimedMultiplier = useCallback((name: string) => {
+    const tm = dataRef.current.timedMultipliers.find((tm) => tm.name == name);
+    return tm;
+  }, []);
+
+  const getRandomTimedMultiplier = useCallback(() => {
+    const i = Math.random() * (dataRef.current.timedMultipliers.length - 1);
+    return dataRef.current.timedMultipliers[i];
+  }, []);
+
+  const setTimedMultiplier = useCallback((tm: TimedMultiplier) => {
+    setData((prevData) => ({ ...prevData, timedMultiplier: tm }));
+  }, []);
+
+  const autoTimedMultiplierCheck = () => {
+    if (Math.random() < 0.1) {
+      console.log("YAP LAN");
+      // mutable copy
+      const tm = { ...functions.getRandomTimedMultiplier() };
+      tm.timestamp = Date.now();
+
+      functions.setTimedMultiplier(tm);
+    }
+  };
+
   const functions: GameFunctions = {
     addKebab: addKebab,
     changeRank: changeRank,
@@ -359,6 +385,10 @@ export default function Game() {
     findAchivement: findAchivement,
     findGenerator: findGenerator,
     playSound: playSound,
+    findTimedMultiplier: findTimedMultiplier,
+    setTimedMultiplier: setTimedMultiplier,
+    autoTimedMultiplierCheck: autoTimedMultiplierCheck,
+    getRandomTimedMultiplier: getRandomTimedMultiplier,
   };
 
   const recalculateKPS_KPC = () => {
@@ -398,6 +428,7 @@ export default function Game() {
       playedForAdd();
       recalculateKPS_KPC();
       checkAchievements();
+      autoTimedMultiplierCheck();
     }, 1000);
 
     // Cleanup the interval when the component unmounts or this effect re-runs

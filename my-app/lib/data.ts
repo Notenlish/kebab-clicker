@@ -3,7 +3,7 @@ import {
   GameData,
   ResearchData,
   Achievement,
-  Rank,
+  TimedMultiplier,
 } from "./types";
 
 export function emptyData() {
@@ -19,8 +19,22 @@ export function emptyData() {
     KebabClicks: 0,
     prestigedAmount: 0,
     ranks: ranksData,
+    timedMultiplier: null,
+    timedMultipliers: allTimedMultipliers,
   } as GameData;
 }
+
+export const allTimedMultipliers: TimedMultiplier[] = [
+  {
+    name: "Golden Kebab",
+    id: 0,
+    clickMultiplier: 2,
+    autoMultiplier: 1,
+    timestamp: 0, // this will be replaced
+    activated: false,
+    image: "./golden-kebab.png",
+  },
+];
 
 export function newPrestigeOverride() {
   return {
