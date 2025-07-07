@@ -14,7 +14,7 @@ run: `npm run dev` to run it in development mode and go to http://localhost:3000
 
 # Build for Itch.io
 
-go to `mg-app` folder via `cd my-app` command
+go to `my-app` folder via `cd my-app` command
 
 run: `npm i` to install npm packages if you haven't already installed them.
 
