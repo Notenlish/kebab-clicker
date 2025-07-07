@@ -12,6 +12,7 @@ interface pos {
 
 export default function TimedMultiplierComponent({
   data,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   functions,
   containerRef,
 }: {
@@ -53,7 +54,7 @@ export default function TimedMultiplierComponent({
           duration: 2.0,
           ease: "power2.inOut",
           yoyo: true,
-          repeat: true,
+          repeat: -1,
         },
       );
     },

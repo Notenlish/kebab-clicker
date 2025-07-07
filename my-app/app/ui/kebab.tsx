@@ -14,7 +14,7 @@ import {
   ultimateKebabsPerSecond,
 } from "@/lib/utils";
 
-import TimedMultiplierComponent from "./timedMultiplier";
+// import TimedMultiplierComponent from "./timedMultiplier";
 
 import { ClickFx } from "@/lib/types";
 import KebabFx from "./kebabFx";
