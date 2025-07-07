@@ -5,13 +5,19 @@ Small clicker game made with next.js. Themed around making kebabs.
 Made for Hackclub Shipwrecked event.
 
 # Run
-go to `my-app` folder
+
+go to `my-app` folder via `cd my-app` command
+
 run: `npm i` to install npm packages
+
 run: `npm run dev` to run it in development mode and go to http://localhost:3000
 
 # Build for Itch.io
-go to `mg-app` folder via `cd my-app`
+
+go to `mg-app` folder via `cd my-app` command
+
 run: `npm i` to install npm packages if you haven't already installed them.
+
 run: `npm run build` to build a static release
 
 then, take all the files in `my-app/out` and compress them to a zip file.
